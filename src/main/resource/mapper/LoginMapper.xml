@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.LoginMapper">
+
+    <sql id="columnAlias">
+        id as id,
+        username as username,
+        password as password,
+        role as role,
+        consumer_id as consumerId
+    </sql>
+
+    <select id="checkLogin"  resultType="com.huzheng.entity.Login">
+        select
+        <include refid="columnAlias"/>
+        from login where username=#{username} and password=#{password}
+    </select>
+</mapper>
