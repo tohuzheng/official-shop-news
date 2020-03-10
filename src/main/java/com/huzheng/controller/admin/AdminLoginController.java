@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @Author 胡正
  * @Date 2020/1/23 17:24
- * @Description 登录Controller
+ * @Description 登管理员录控制器
  */
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/manage")
 public class AdminLoginController {
     @Autowired
     private ILoginService loginService;

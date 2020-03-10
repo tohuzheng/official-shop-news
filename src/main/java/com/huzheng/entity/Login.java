@@ -15,8 +15,6 @@ public class Login implements Serializable {
     private Integer id;
     private String username;
     private String password;
-    private String role;  //角色
-    private Integer consumerId; //顾客表id
 
     public Integer getId() {
         return id;
@@ -40,22 +38,6 @@ public class Login implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Integer getConsumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(Integer consumerId) {
-        this.consumerId = consumerId;
     }
 
 }
