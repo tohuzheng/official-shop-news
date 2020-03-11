@@ -111,8 +111,21 @@ public class CustomerController {
      */
     @RequestMapping(value = "/register")
     @ResponseBody
-    public void registerUser(Customer customer){
+    public void registerUser(Customer customer,String keyNo){
+        // 获的密钥
+        RedisString redisString = RedisString.getInstans();
+        String privateKey = redisString.getValueByKey(keyNo);
+        try {
+            // 解密
+            String password1 = RsaUtils.decodeRsa(customer.getPassword(), privateKey);
+            customer.setPassword(password1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 添加顾客
         customerService.insert(customer);
+        // 添加成功，删除密钥
+        redisString.delete(keyNo);
     }
 
     /**
