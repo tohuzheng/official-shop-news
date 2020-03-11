@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IProductDao">
+
+    <resultMap type="com.huzheng.entity.Product" id="ProductMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="OTHER"/>
+        <result property="weight" column="weight" jdbcType="NUMERIC"/>
+        <result property="size" column="size" jdbcType="VARCHAR"/>
+        <result property="productClassId" column="product_class_id" jdbcType="INTEGER"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+        <result property="repertoryNumber" column="repertory_number" jdbcType="INTEGER"/>
+        <result property="originPlace" column="origin_place" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ProductMap">
+        select
+          id, name, price, weight, size, product_class_id, img_url, repertory_number, origin_place
+        from official_shop.product
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ProductMap">
+        select
+          id, name, price, weight, size, product_class_id, img_url, repertory_number, origin_place
+        from official_shop.product
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ProductMap">
+        select
+          id, name, price, weight, size, product_class_id, img_url, repertory_number, origin_place
+        from official_shop.product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="weight != null">
+                and weight = #{weight}
+            </if>
+            <if test="size != null and size != ''">
+                and size = #{size}
+            </if>
+            <if test="productClassId != null">
+                and product_class_id = #{productClassId}
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                and img_url = #{imgUrl}
+            </if>
+            <if test="repertoryNumber != null">
+                and repertory_number = #{repertoryNumber}
+            </if>
+            <if test="originPlace != null and originPlace != ''">
+                and origin_place = #{originPlace}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insertProduct" keyProperty="id" useGeneratedKeys="true">
+        insert into official_shop.product(name, price, weight, size, product_class_id, img_url, repertory_number, origin_place)
+        values (#{name}, #{price}, #{weight}, #{size}, #{productClassId}, #{imgUrl}, #{repertoryNumber}, #{originPlace})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateProduct">
+        update official_shop.product
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="size != null and size != ''">
+                size = #{size},
+            </if>
+            <if test="productClassId != null">
+                product_class_id = #{productClassId},
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                img_url = #{imgUrl},
+            </if>
+            <if test="repertoryNumber != null">
+                repertory_number = #{repertoryNumber},
+            </if>
+            <if test="originPlace != null and originPlace != ''">
+                origin_place = #{originPlace},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteByIdProduct">
+        delete from official_shop.product where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,5 +1,9 @@
 package com.huzheng.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,10 +12,11 @@ import java.util.Date;
  * @Date 2020/3/10 20:34
  * @Description 顾客实体类
  */
+@TableName("customer")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = -2171578017025627374L;
-
+    @TableId(value = "id", type= IdType.AUTO)
     private Integer id;
     private String name;
     private String sex;

@@ -42,7 +42,6 @@ public class RsaUtils {
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
             // 得到私钥
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-            System.out.println(privateKey);
             // 得到公钥
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             // 得到公钥字符串

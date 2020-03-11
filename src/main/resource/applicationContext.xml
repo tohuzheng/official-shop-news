@@ -37,7 +37,7 @@
     </bean>
 
     <!-- spring和MyBatis整合，不需要mybatis的配置映射文件 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <!--实例化数据源-->
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描mapping.xml文件 -->

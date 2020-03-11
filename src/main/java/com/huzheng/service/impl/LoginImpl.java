@@ -1,6 +1,6 @@
 package com.huzheng.service.impl;
 
-import com.huzheng.dao.LoginMapper;
+import com.huzheng.dao.LoginDao;
 import com.huzheng.entity.Login;
 import com.huzheng.service.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginImpl implements ILoginService {
     @Autowired
-    private LoginMapper loginMapper;
+    private LoginDao loginDao;
 
     @Override
     public Login loginCheck(Login login) {
         if (login == null){
             throw new RuntimeException("传入登录对象为null，请传入正确参数");
         }
-        return loginMapper.checkLogin(login);
+        return loginDao.checkLogin(login);
     }
 }
