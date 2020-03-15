@@ -3,6 +3,7 @@ package com.huzheng.service.impl;
 import com.huzheng.dao.LoginDao;
 import com.huzheng.entity.Login;
 import com.huzheng.service.ILoginService;
+import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @Description
  */
 @Service
-public class LoginImpl implements ILoginService {
+public class LoginImpl extends IBaseServiceImpl<LoginDao,Login> implements ILoginService {
     @Autowired
     private LoginDao loginDao;
 

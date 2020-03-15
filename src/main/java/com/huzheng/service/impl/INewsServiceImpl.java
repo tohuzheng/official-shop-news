@@ -3,6 +3,7 @@ package com.huzheng.service.impl;
 import com.huzheng.entity.News;
 import com.huzheng.dao.INewsDao;
 import com.huzheng.service.INewsService;
+import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * @since 2020-03-11 20:59:47
  */
 @Service("newsService")
-public class INewsServiceImpl implements INewsService {
+public class INewsServiceImpl extends IBaseServiceImpl<INewsDao,News> implements INewsService {
+
     @Autowired
     private INewsDao newsDao;
 

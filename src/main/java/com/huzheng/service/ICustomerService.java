@@ -4,6 +4,7 @@ package com.huzheng.service;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.entity.Customer;
+import com.huzheng.service.base.IBaseService;
 
 /**
  * 顾客信息(Customer)表服务接口
@@ -11,7 +12,7 @@ import com.huzheng.entity.Customer;
  * @author zheng.hu
  * @since 2020-03-11 15:42:40
  */
-public interface ICustomerService {
+public interface ICustomerService extends IBaseService<Customer> {
 
     /**
      * 通过ID查询单条数据

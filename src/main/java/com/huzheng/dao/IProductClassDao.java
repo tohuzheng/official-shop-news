@@ -1,17 +1,17 @@
 package com.huzheng.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.huzheng.entity.Product;
+import com.huzheng.entity.ProductClass;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * (Product)表数据库访问层
+ * 产品类目(ProductClass)表数据库访问层
  *
  * @author zheng.hu
- * @since 2020-03-11 21:24:11
+ * @since 2020-03-13 23:48:22
  */
-public interface IProductDao extends BaseMapper<Product> {
+public interface IProductClassDao extends BaseMapper<ProductClass> {
 
     /**
      * 通过ID查询单条数据
@@ -19,7 +19,7 @@ public interface IProductDao extends BaseMapper<Product> {
      * @param id 主键
      * @return 实例对象
      */
-    Product queryById(Integer id);
+    ProductClass queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -28,32 +28,32 @@ public interface IProductDao extends BaseMapper<Product> {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<Product> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<ProductClass> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
 
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param product 实例对象
+     * @param productClass 实例对象
      * @return 对象列表
      */
-    List<Product> queryAll(Product product);
+    List<ProductClass> queryAll(ProductClass productClass);
 
     /**
      * 新增数据
      *
-     * @param product 实例对象
+     * @param productClass 实例对象
      * @return 影响行数
      */
-    int insertProduct(Product product);
+    int insertProductClass(ProductClass productClass);
 
     /**
      * 修改数据
      *
-     * @param product 实例对象
+     * @param productClass 实例对象
      * @return 影响行数
      */
-    int updateProduct(Product product);
+    int updateProductClass(ProductClass productClass);
 
     /**
      * 通过主键删除数据
@@ -61,6 +61,6 @@ public interface IProductDao extends BaseMapper<Product> {
      * @param id 主键
      * @return 影响行数
      */
-    int deleteByIdProduct(Integer id);
+    int deleteByIdProductClass(Integer id);
 
 }

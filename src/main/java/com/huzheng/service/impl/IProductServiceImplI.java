@@ -3,6 +3,7 @@ package com.huzheng.service.impl;
 import com.huzheng.entity.Product;
 import com.huzheng.dao.IProductDao;
 import com.huzheng.service.IProductService;
+import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @since 2020-03-11 21:24:11
  */
 @Service("productService")
-public class IProductServiceImpl implements IProductService {
+public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product> implements IProductService {
     @Autowired
     private IProductDao productDao;
 

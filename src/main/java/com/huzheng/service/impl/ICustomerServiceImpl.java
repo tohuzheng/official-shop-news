@@ -3,10 +3,13 @@ package com.huzheng.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huzheng.commoms.utils.Page;
+import com.huzheng.dao.IBuyOrderDao;
 import com.huzheng.dto.LoginDto;
+import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Customer;
 import com.huzheng.dao.CustomerDao;
 import com.huzheng.service.ICustomerService;
+import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,7 @@ import java.util.List;
  * @since 2020-03-11 15:42:40
  */
 @Service("customerService")
-public class ICustomerServiceImpl implements ICustomerService {
+public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer> implements ICustomerService {
     @Autowired
     private CustomerDao customerDao;
 
@@ -36,7 +39,7 @@ public class ICustomerServiceImpl implements ICustomerService {
     }
 
     /**
-     * 分页查询多条数据
+     * 无条件限制，分页查询多条数据
      *
      * @param page 分页
      * @return 对象列表

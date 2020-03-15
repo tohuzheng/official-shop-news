@@ -1,6 +1,8 @@
 package com.huzheng.service;
 
 import com.huzheng.entity.News;
+import com.huzheng.service.base.IBaseService;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  * @author zheng.hu
  * @since 2020-03-11 20:59:47
  */
-public interface INewsService {
+public interface INewsService extends IBaseService<News> {
 
     /**
      * 通过ID查询单条数据

@@ -12,11 +12,8 @@ import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,6 +25,7 @@ import java.util.UUID;
 @RequestMapping("/customer")
 @Controller
 public class CustomerController {
+
     @Autowired
     private ICustomerService customerService;
 
@@ -150,6 +148,11 @@ public class CustomerController {
         customerService.deleteById(id);
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/3/12 9:45
+     * @description 分页查询顾客信息，默认10条每页
+     */
     @RequestMapping(value = "/queryAllByPage")
     @ResponseBody
     public Page<Customer> queryAllByPage(Page page){

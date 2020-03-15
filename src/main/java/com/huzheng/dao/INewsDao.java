@@ -1,5 +1,6 @@
 package com.huzheng.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.huzheng.entity.News;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author zheng.hu
  * @since 2020-03-11 20:59:47
  */
-public interface INewsDao {
+public interface INewsDao extends BaseMapper<News> {
 
     /**
      * 通过ID查询单条数据

@@ -10,10 +10,10 @@
     <!-- 自动扫描该包 @controller注解的类-->
     <context:component-scan base-package="com.huzheng.controller"/>
 
-    <!-- 静态资源处理,不拦截直接放行 -->
+    <!-- 静态资源处理,不拦截直接放行,交给Servlet处理 -->
     <mvc:default-servlet-handler/>
 
-    <!--自动注册 RequestMappingHandlerMapping、RequestMappingHandlerAdapter 等bean -->
+    <!--自动注册 RequestMappingHandlerMapping、RequestMappingHandlerAdapter 等bean，设置reponseBody编码 -->
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -36,4 +36,12 @@
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".html" />
     </bean>
+
+    <!--SwaggerApi接口文档配置-->
+    <!--重要！将你的SwaggerConfig配置类注入-->
+    <bean class="com.huzheng.config.SwaggerConfig"/>
+    <!--重要！配置swagger资源不被拦截-->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+
 </beans>

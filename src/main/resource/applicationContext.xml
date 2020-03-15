@@ -44,6 +44,14 @@
         <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
         <!--打印sql日志-->
         <property name="configLocation" value="classpath:mybatis.xml"></property>
+        <!--mybatisPlus分页插件-->
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
+                </bean>
+            </array>
+        </property>
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的接口类，利用工厂模式动态创建实现类-->
@@ -59,5 +67,6 @@
     </bean>
     <!--开启声明式注解事务，即添加@Transactional的方法就开启了事务-->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
 
 </beans>
