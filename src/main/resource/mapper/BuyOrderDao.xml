@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IBuyOrderDao">
+
+    <resultMap type="com.huzheng.entity.BuyOrder" id="BuyOrderMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="buyTime" column="buy_time" jdbcType="TIMESTAMP"/>
+        <result property="paySumMoney" column="pay_sum_money" jdbcType="OTHER"/>
+        <result property="payStatus" column="pay_status" jdbcType="INTEGER"/>
+        <result property="productSumNumber" column="product_sum_number" jdbcType="INTEGER"/>
+        <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+        <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BuyOrderMap">
+        select
+          id, buy_time, pay_sum_money, pay_status, product_sum_number, address_id, order_status
+        from official_shop.buy_order
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BuyOrderMap">
+        select
+          id, buy_time, pay_sum_money, pay_status, product_sum_number, address_id, order_status
+        from official_shop.buy_order
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BuyOrderMap">
+        select
+          id, buy_time, pay_sum_money, pay_status, product_sum_number, address_id, order_status
+        from official_shop.buy_order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="buyTime != null">
+                and buy_time = #{buyTime}
+            </if>
+            <if test="paySumMoney != null">
+                and pay_sum_money = #{paySumMoney}
+            </if>
+            <if test="payStatus != null">
+                and pay_status = #{payStatus}
+            </if>
+            <if test="productSumNumber != null">
+                and product_sum_number = #{productSumNumber}
+            </if>
+            <if test="addressId != null">
+                and address_id = #{addressId}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insertBuyOrder" keyProperty="id" useGeneratedKeys="true">
+        insert into official_shop.buy_order(buy_time, pay_sum_money, pay_status, product_sum_number, address_id, order_status)
+        values (#{buyTime}, #{paySumMoney}, #{payStatus}, #{productSumNumber}, #{addressId}, #{orderStatus})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateBuyOrder">
+        update official_shop.buy_order
+        <set>
+            <if test="buyTime != null">
+                buy_time = #{buyTime},
+            </if>
+            <if test="paySumMoney != null">
+                pay_sum_money = #{paySumMoney},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="productSumNumber != null">
+                product_sum_number = #{productSumNumber},
+            </if>
+            <if test="addressId != null">
+                address_id = #{addressId},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteByIdBuyOrder">
+        delete from official_shop.buy_order where id = #{id}
+    </delete>
+
+</mapper>
