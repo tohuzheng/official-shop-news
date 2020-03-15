@@ -44,4 +44,20 @@
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
 
+    <!--SpringMVC总拦截器,不拦截/admin/login-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--默认拦截路径-->
+            <mvc:mapping path="/**"/>
+            <!--不拦截路径,白名单-->
+            <mvc:exclude-mapping path="/admin/loginCheck"/>
+            <mvc:exclude-mapping path="/news/**"/>
+            <mvc:exclude-mapping path="/customer/checkLogin"/>
+            <mvc:exclude-mapping path="/customer/getPublicKey"/>
+            <mvc:exclude-mapping path="/customer/getVerityCode"/>
+            <mvc:exclude-mapping path="/customer/register"/>
+            <bean class="com.huzheng.filter.LoginFilter" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

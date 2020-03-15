@@ -3,7 +3,9 @@ package com.huzheng.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,8 @@ public class Customer implements Serializable {
     private Integer age;
     private String tel;
     private String email;
+    @Column(name = "create_date")
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date createDate;
     private String username;
     private String password;

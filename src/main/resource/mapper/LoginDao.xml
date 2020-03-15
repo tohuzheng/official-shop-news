@@ -7,9 +7,7 @@
     <sql id="columnAlias">
         id as id,
         username as username,
-        password as password,
-        role as role,
-        consumer_id as consumerId
+        password as password
     </sql>
 
     <select id="checkLogin"  resultType="com.huzheng.entity.Login">

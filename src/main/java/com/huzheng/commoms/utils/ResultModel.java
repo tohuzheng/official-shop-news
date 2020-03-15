@@ -7,7 +7,7 @@ import java.util.List;
  * @Date 2020/3/10 14:02
  * @Description response 返回结果数据模型
  */
-public class ResultModel {
+public class ResultModel<T> {
 
     /**
      * 消息
@@ -25,6 +25,8 @@ public class ResultModel {
      * 数据集合
      */
     private List data;
+
+    private T dto;
 
     public ResultModel(){}
 
@@ -72,5 +74,13 @@ public class ResultModel {
 
     public void setData(List data) {
         this.data = data;
+    }
+
+    public T getDto() {
+        return dto;
+    }
+
+    public void setDto(T dto) {
+        this.dto = dto;
     }
 }

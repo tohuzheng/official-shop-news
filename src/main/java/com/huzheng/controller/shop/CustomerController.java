@@ -12,6 +12,7 @@ import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
@@ -155,7 +156,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/queryAllByPage")
     @ResponseBody
-    public Page<Customer> queryAllByPage(Page page){
+    public Page<Customer> queryAllByPage(@RequestBody Page page){
         return customerService.queryAllByLimit(page);
     }
 
