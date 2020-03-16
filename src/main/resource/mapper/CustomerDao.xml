@@ -14,27 +14,7 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="CustomerMap">
-        select
-          id, name, sex, age, tel, email, create_date, username, password
-        from official_shop.customer
-        where id = #{id}
-    </select>
-
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="CustomerMap">
-        select
-          id, name, sex, age, tel, email, create_date, username, password
-        from official_shop.customer
-        limit #{offset}, #{limit}
-    </select>
-
-    <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="CustomerMap">
-        select
-          id, name, sex, age, tel, email, create_date, username, password
-        from official_shop.customer
+    <sql id="condition">
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -54,14 +34,79 @@
             <if test="email != null and email != ''">
                 and email = #{email}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
-            </if>
             <if test="username != null and username != ''">
                 and username = #{username}
             </if>
             <if test="password != null and password != ''">
                 and password = #{password}
+            </if>
+        </where>
+    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CustomerMap">
+        select
+          id, name, sex, age, tel, email, create_date, username, password
+        from official_shop.customer
+        where id = #{id}
+    </select>
+
+    <!--查询实体类条件分页查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CustomerMap">
+        select
+          id, name, sex, age, tel, email, create_date, username, password,status
+        from official_shop.customer
+        <where>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="startDate != null and overDate != null">
+                and create_date between #{startDate} and #{overDate}
+            </if>
+        </where>
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryTotal" resultType="java.lang.Integer">
+        select count(id)
+        from official_shop.customer
+        <where>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="startDate != null and overDate != null">
+                and create_date between #{startDate} and #{overDate}
             </if>
         </where>
     </select>
@@ -112,7 +157,7 @@
     <!--客户登录检查-->
     <select id="loginCheck" resultMap="CustomerMap">
         select * from customer
-        where username=#{username} and password=#{password}
+        where username=#{username} and password=#{password} and status=0
     </select>
 
 </mapper>

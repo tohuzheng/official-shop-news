@@ -1,6 +1,7 @@
 package com.huzheng.controller.shop;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.redis.RedisString;
 import com.huzheng.commoms.utils.EmailUtils;
 import com.huzheng.commoms.utils.Page;
@@ -8,6 +9,7 @@ import com.huzheng.commoms.utils.ResultModel;
 import com.huzheng.commoms.utils.RsaUtils;
 import com.huzheng.dto.KeyDto;
 import com.huzheng.dto.LoginDto;
+import com.huzheng.dto.QueryCustomerDto;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -156,8 +160,35 @@ public class CustomerController {
      */
     @RequestMapping(value = "/queryAllByPage")
     @ResponseBody
-    public Page<Customer> queryAllByPage(@RequestBody Page page){
-        return customerService.queryAllByLimit(page);
+    public Page<Customer> queryAllByPage(QueryCustomerDto queryCustomerDto){
+
+        return customerService.queryAllByLimit(queryCustomerDto);
     }
 
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:13
+     * @description 重置用户密码
+     */
+    @RequestMapping(value = "/resetPass")
+    @ResponseBody
+    public void resetPass(Integer id){
+        if (id == null){
+            throw new RuntimeException("id为空，参数错误");
+        }
+        customerService.resetPass(id);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:13
+     * @description 冻结用户
+     */
+    @RequestMapping(value = "/freezeCustomer")
+    @ResponseBody
+    public void freezeCustomer(Integer id,Integer status){
+
+        customerService.freezeCustomer(id, status);
+    }
 }

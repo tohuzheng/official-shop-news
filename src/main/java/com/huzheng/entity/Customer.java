@@ -30,6 +30,7 @@ public class Customer implements Serializable {
     private Date createDate;
     private String username;
     private String password;
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -101,6 +102,14 @@ public class Customer implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override

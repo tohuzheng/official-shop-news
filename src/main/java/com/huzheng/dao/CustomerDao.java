@@ -1,6 +1,7 @@
 package com.huzheng.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.huzheng.dto.CustomerParam;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.entity.Customer;
 import org.apache.ibatis.annotations.Param;
@@ -23,22 +24,19 @@ public interface CustomerDao extends BaseMapper<Customer> {
     Customer queryById(Integer id);
 
     /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
+     * 条件分页查询指定行数
      * @return 对象列表
      */
-    List<Customer> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Customer> queryAllByLimit(CustomerParam customerParam);
 
 
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param customer 实例对象
+     * @param customerParam 实例对象
      * @return 对象列表
      */
-    List<Customer> queryAll(Customer customer);
+    Integer queryTotal(CustomerParam customerParam);
 
     /**
      * 新增数据

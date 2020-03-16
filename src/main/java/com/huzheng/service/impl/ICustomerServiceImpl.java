@@ -1,10 +1,15 @@
 package com.huzheng.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.utils.Page;
+import com.huzheng.commoms.utils.WrapperUtils;
 import com.huzheng.dao.IBuyOrderDao;
+import com.huzheng.dto.CustomerParam;
 import com.huzheng.dto.LoginDto;
+import com.huzheng.dto.QueryCustomerDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Customer;
 import com.huzheng.dao.CustomerDao;
@@ -39,18 +44,28 @@ public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer
     }
 
     /**
-     * 无条件限制，分页查询多条数据
-     *
-     * @param page 分页
+     * 条件限制，分页查询多条数
      * @return 对象列表
      */
     @Override
-    public Page<Customer> queryAllByLimit(Page page) {
+    public Page<Customer> queryAllByLimit(QueryCustomerDto queryCustomerDto) {
+        CustomerParam customerParam =new CustomerParam();
+        if (queryCustomerDto != null) {
+            BeanUtil.copyProperties(queryCustomerDto,customerParam);
+            if (queryCustomerDto.getDaterangeArr()!=null && queryCustomerDto.getDaterangeArr().length>1){
+                customerParam.setStartDate(queryCustomerDto.getDaterangeArr()[0]);
+                customerParam.setOverDate(queryCustomerDto.getDaterangeArr()[1]);
+            }
+        }
+        int offset = queryCustomerDto.getPageSize()*(queryCustomerDto.getPageNo()-1);
+        int limit = offset+queryCustomerDto.getPageSize();
+        customerParam.setOffset(offset);
+        customerParam.setLimit(limit);
 
-        int offset = page.getPageSize()*(page.getPageNo()-1);
-        int limit = offset+page.getPageSize();
-        List<Customer> customerList = this.customerDao.queryAllByLimit(offset, limit);
-        Integer count = customerDao.selectCount(new QueryWrapper<>());
+        List<Customer> customerList = this.customerDao.queryAllByLimit(customerParam);
+
+        Integer count = customerDao.queryTotal(customerParam);
+        Page<Customer> page =new Page<>();
         page.setCount(count);
         page.setList(customerList);
         return page;
@@ -115,4 +130,37 @@ public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer
         Customer customer = customerDao.loginCheck(loginDto);
         return customer;
     }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:07
+     * @description 重置客户密码
+     */
+    @Override
+    public void resetPass(Integer id) {
+        if (id == null){
+            throw new RuntimeException("id为空，参数错误");
+        }
+        Customer customer =new Customer();
+        customer.setPassword("123456");
+        customer.setId(id);
+        this._updateById(customer);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:07
+     * @description 修改客户状态
+     */
+    @Override
+    public void freezeCustomer(Integer id, Integer status) {
+        if (id == null || status ==null){
+            throw new RuntimeException("id或status为空，参数错误");
+        }
+        Customer customer =new Customer();
+        customer.setStatus(status);
+        customer.setId(id);
+        this._updateById(customer);
+    }
+
 }

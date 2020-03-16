@@ -27,7 +27,7 @@ public class AdminLoginController {
 
     @RequestMapping("/loginCheck")
     @ResponseBody
-    public ResultModel loginCheck(@RequestBody Login login, HttpServletRequest request){
+    public ResultModel loginCheck(Login login, HttpServletRequest request){
         // 验证结果
         ResultModel<Login> resultModel = new ResultModel<Login>();
         // 验证账户密码是否正确

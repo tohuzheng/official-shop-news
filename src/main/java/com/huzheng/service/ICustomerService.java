@@ -1,8 +1,10 @@
 package com.huzheng.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.dto.LoginDto;
+import com.huzheng.dto.QueryCustomerDto;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.base.IBaseService;
 
@@ -25,10 +27,10 @@ public interface ICustomerService extends IBaseService<Customer> {
     /**
      * 分页查询多条数据
      *
-     * @param page 查询起始位置
+     * @param queryCustomerDto 查询条件
      * @return 对象列表
      */
-    Page<Customer> queryAllByLimit(Page page);
+    Page<Customer> queryAllByLimit(QueryCustomerDto queryCustomerDto);
 
     /**
      * 新增数据
@@ -60,5 +62,20 @@ public interface ICustomerService extends IBaseService<Customer> {
      * @description 登录检查
      */
     Customer checkLogin(LoginDto loginDto);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:05
+     * @description 重置密码
+     */
+    void resetPass(Integer id);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/16 23:05
+     * @description 修改客户状态
+     */
+    void freezeCustomer(Integer id, Integer status);
+
 
 }
