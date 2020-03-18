@@ -1,5 +1,9 @@
 package com.huzheng.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.math.BigDecimal;
 import java.io.Serializable;
 
@@ -9,9 +13,11 @@ import java.io.Serializable;
  * @author zheng.hu
  * @since 2020-03-11 21:24:11
  */
+@TableName(value = "product")
 public class Product implements Serializable {
     private static final long serialVersionUID = 368187388991993658L;
-    
+
+    @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
     /**
     * 产品名称
@@ -28,11 +34,11 @@ public class Product implements Serializable {
     /**
     * 产品尺寸
     */
-    private String size;
+    private String productSize;
     /**
-    * 产品绑定类目id
+    * 产品绑定类目名称
     */
-    private Integer productClassId;
+    private String productClassName;
     /**
     * 图片地址
     */
@@ -79,20 +85,20 @@ public class Product implements Serializable {
         this.weight = weight;
     }
 
-    public String getSize() {
-        return size;
+    public String getProductSize() {
+        return productSize;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
-    public Integer getProductClassId() {
-        return productClassId;
+    public String getProductClassName() {
+        return productClassName;
     }
 
-    public void setProductClassId(Integer productClassId) {
-        this.productClassId = productClassId;
+    public void setProductClassName(String productClassName) {
+        this.productClassName = productClassName;
     }
 
     public String getImgUrl() {

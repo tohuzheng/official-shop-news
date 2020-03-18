@@ -91,13 +91,10 @@ public class IProductClassServiceImpl extends IBaseServiceImpl<IProductClassDao,
     }
 
     @Override
-    public List<String> queryAllProductClass() {
+    public List<ProductClass> queryAllProductClass() {
         List<ProductClass> list = this.queryAllByCondition(new ProductClass());
-        List<String> productClassList = new ArrayList<>();
-        for (int i=0;i<list.size();i++) {
-            productClassList.add(list.get(i).getClassName());
-        }
 
-        return productClassList;
+
+        return list;
     }
 }

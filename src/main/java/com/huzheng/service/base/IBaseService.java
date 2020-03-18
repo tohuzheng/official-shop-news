@@ -3,6 +3,7 @@ package com.huzheng.service.base;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.huzheng.commoms.utils.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
@@ -138,4 +139,5 @@ public interface IBaseService<T> {
      * @param queryWrapper 实体对象封装操作类
      */
     IPage<Map<String, Object>> _selectMapsPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
 }

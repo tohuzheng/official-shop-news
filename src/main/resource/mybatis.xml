@@ -6,5 +6,7 @@
 <configuration>
     <settings>
         <setting name="logImpl" value="log4j"/>
+        <!--开启数据库下划线和Java驼峰映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 </configuration>

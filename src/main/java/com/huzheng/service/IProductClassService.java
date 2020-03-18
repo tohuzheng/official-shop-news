@@ -67,6 +67,6 @@ public interface IProductClassService extends IBaseService<ProductClass> {
      * @date 2020/3/13 23:51
      * @description 查询所有商品
      */
-    List<String> queryAllProductClass();
+    List<ProductClass> queryAllProductClass();
 
 }

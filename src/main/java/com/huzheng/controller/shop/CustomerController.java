@@ -1,6 +1,8 @@
 package com.huzheng.controller.shop;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.redis.RedisString;
 import com.huzheng.commoms.utils.EmailUtils;
@@ -190,5 +192,28 @@ public class CustomerController {
     public void freezeCustomer(Integer id,Integer status){
 
         customerService.freezeCustomer(id, status);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/17 23:03
+     * @description 测试mybatgis-plus分页
+     */
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public IPage testPage(){
+        QueryWrapper<Customer> queryWrapper=new QueryWrapper<>();
+        queryWrapper.le("create_date", new Date());
+        Customer customer =new Customer();
+        customer.setSex("男");
+        customer.setTel("");
+        Map<String, Object> map = BeanUtil.beanToMap(customer);
+        queryWrapper.allEq(map,false);
+        IPage<Customer> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
+        page.setSize(10);
+        page.setCurrent(1);
+        IPage<Customer> customerIPage = customerService._selectPage(page, queryWrapper);
+        IPage<Map<String, Object>> mapIPage = customerService._selectMapsPage(page, queryWrapper);
+        return mapIPage;
     }
 }

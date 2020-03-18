@@ -1,5 +1,10 @@
 package com.huzheng.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.commoms.utils.CloumnNameUtils;
 import com.huzheng.entity.Product;
 import com.huzheng.dao.IProductDao;
 import com.huzheng.service.IProductService;
@@ -7,6 +12,7 @@ import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Product)表服务实现类
@@ -18,53 +24,6 @@ import java.util.List;
 public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product> implements IProductService {
     @Autowired
     private IProductDao productDao;
-
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    @Override
-    public Product queryById(Integer id) {
-        return this.productDao.queryById(id);
-    }
-
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    @Override
-    public List<Product> queryAllByLimit(int offset, int limit) {
-        return this.productDao.queryAllByLimit(offset, limit);
-    }
-
-    /**
-     * 新增数据
-     *
-     * @param product 实例对象
-     * @return 实例对象
-     */
-    @Override
-    public Product insert(Product product) {
-        this.productDao.insertProduct(product);
-        return product;
-    }
-
-    /**
-     * 修改数据
-     *
-     * @param product 实例对象
-     * @return 实例对象
-     */
-    @Override
-    public Product update(Product product) {
-        this.productDao.updateProduct(product);
-        return this.queryById(product.getId());
-    }
 
     /**
      * 通过主键删除数据
@@ -86,5 +45,19 @@ public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product
     @Override
     public List<Product> queryAllByCondition(Product product) {
         return this.productDao.queryAll(product);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/18 13:26
+     * @description 通过实体类体条件分页查询
+     */
+    @Override
+    public IPage<Product> queryPageByEntity(Page page, Product product) {
+        QueryWrapper<Product> queryWrapper =new QueryWrapper<>();
+        Map<String, Object> map = BeanUtil.beanToMap(product);
+        queryWrapper.allEq(CloumnNameUtils.toUnder(map), false);
+        IPage iPage = this._selectPage(page, queryWrapper);
+        return iPage;
     }
 }

@@ -52,6 +52,7 @@
                 </bean>
             </array>
         </property>
+
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的接口类，利用工厂模式动态创建实现类-->

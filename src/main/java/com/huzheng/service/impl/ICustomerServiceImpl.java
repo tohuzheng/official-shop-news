@@ -2,15 +2,10 @@ package com.huzheng.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.utils.Page;
-import com.huzheng.commoms.utils.WrapperUtils;
-import com.huzheng.dao.IBuyOrderDao;
 import com.huzheng.dto.CustomerParam;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.dto.QueryCustomerDto;
-import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Customer;
 import com.huzheng.dao.CustomerDao;
 import com.huzheng.service.ICustomerService;

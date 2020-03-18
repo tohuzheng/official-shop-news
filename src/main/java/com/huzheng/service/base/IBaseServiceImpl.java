@@ -1,9 +1,11 @@
 package com.huzheng.service.base;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.huzheng.commoms.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -114,6 +116,7 @@ public class IBaseServiceImpl<D extends BaseMapper<T>,T> implements IBaseService
 
     @Override
     public IPage<T> _selectPage(IPage<T> page, Wrapper<T> queryWrapper) {
+
         return baseMapper.selectPage(page, queryWrapper);
     }
 
@@ -121,4 +124,5 @@ public class IBaseServiceImpl<D extends BaseMapper<T>,T> implements IBaseService
     public IPage<Map<String, Object>> _selectMapsPage(IPage<T> page, Wrapper<T> queryWrapper) {
         return baseMapper.selectMapsPage(page, queryWrapper);
     }
+
 }

@@ -1,5 +1,7 @@
 package com.huzheng.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.huzheng.entity.Product;
 import com.huzheng.service.base.IBaseService;
@@ -14,38 +16,7 @@ import java.util.List;
  */
 public interface IProductService extends IBaseService<Product> {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    Product queryById(Integer id);
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    List<Product> queryAllByLimit(int offset, int limit);
-
-    /**
-     * 新增数据
-     *
-     * @param product 实例对象
-     * @return 实例对象
-     */
-    Product insert(Product product);
-
-    /**
-     * 修改数据
-     *
-     * @param product 实例对象
-     * @return 实例对象
-     */
-    Product update(Product product);
 
     /**
      * 通过主键删除数据
@@ -62,5 +33,12 @@ public interface IProductService extends IBaseService<Product> {
      * @return 查询结果集合
      */
     List<Product> queryAllByCondition(Product product);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/18 13:25
+     * @description 通过实体类分页查询
+     */
+    IPage<Product> queryPageByEntity(Page page, Product product);
 
 }
