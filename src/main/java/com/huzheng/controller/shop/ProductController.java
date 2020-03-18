@@ -51,6 +51,14 @@ public class ProductController {
         productService._insert(product);
     }
 
+    @PostMapping("/updateProduct")
+    public void updateProduct(Product product) {
+        if (product.getId() == null) {
+            throw new RuntimeException("产品id为空，无法更新");
+        }
+        productService._updateById(product);
+    }
+
     @PostMapping("/addProductImg")
     public String addProductImg(MultipartFile file, HttpServletRequest request){
         String basePath = "E:/img/";
