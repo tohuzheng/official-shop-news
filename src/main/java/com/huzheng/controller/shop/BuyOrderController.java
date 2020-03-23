@@ -38,7 +38,7 @@ public class BuyOrderController {
     /**
      * @author zheng.hu
      * @date 2020/3/23 11:03
-     * @description  分页查询，带条件
+     * @description  分页查询带条件
      */
     @PostMapping("/queryPage")
     public Page queryPage(QueryBuyOrderDto query, Date[] daterangeArr) {
