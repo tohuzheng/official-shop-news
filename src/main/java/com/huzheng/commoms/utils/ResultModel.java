@@ -52,9 +52,7 @@ public class ResultModel<T> {
         this.msg = msg;
     }
 
-    public String getToken() {
-        return token;
-    }
+    public String getToken() { return token; }
 
     public void setToken(String token) {
         this.token = token;

@@ -2,20 +2,19 @@ package com.huzheng.commoms.enums;
 
 /**
  * @Author 胡正
- * @Date 2020/3/23 10:31
- * @Description 订单状态枚举类：0-未发货，1-已发货，2-已签收，3-已退货
+ * @Date 2020/3/15 11:35
+ * @Description
  */
-public enum OrderStatus {
+public enum PayStatus {
 
-    UN_DELIVER("未发货",0),
-    DELIVER("已发货", 1),
-    RECEIVED("已签收",2),
-    SALES_RETURN("已退货",3);
+    PAYING("支付中",0),
+    PAY_SUCCESS("支付成功",1),
+    PAY_FAIL("支付失败",2);
 
     private String name;
     private Integer value;
 
-    OrderStatus(String name, Integer value){
+    PayStatus(String name, Integer value){
         this.name = name;
         this.value = value;
     }

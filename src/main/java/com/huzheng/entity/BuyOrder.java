@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -12,11 +11,11 @@ import java.io.Serializable;
  * 订单(BuyOrder)实体类
  *
  * @author zheng.hu
- * @since 2020-03-14 23:51:33
+ * @since 2020-03-23 10:40:31
  */
 @TableName("buy_order")
 public class BuyOrder implements Serializable {
-    private static final long serialVersionUID = -62554229858349469L;
+    private static final long serialVersionUID = -97437021723536219L;
     /**
     * 主键
     */
@@ -29,9 +28,9 @@ public class BuyOrder implements Serializable {
     /**
     * 支付总金额
     */
-    private BigDecimal paySumMoney;
+    private Double paySumMoney;
     /**
-    * 订单状态,0未支付,1支付成功,2支付中,3支付失败
+    * 支付状态,0-支付中,1-支付成功,2-支付失败
     */
     private Integer payStatus;
     /**
@@ -46,6 +45,14 @@ public class BuyOrder implements Serializable {
     * 订单状态,0未发货,1已发货,2已签收,3已退货
     */
     private Integer orderStatus;
+    /**
+    * 订单编号
+    */
+    private String orderCode;
+    /**
+    * 备注
+    */
+    private String remark;
 
 
     public Integer getId() {
@@ -64,11 +71,11 @@ public class BuyOrder implements Serializable {
         this.buyTime = buyTime;
     }
 
-    public BigDecimal getPaySumMoney() {
+    public Double getPaySumMoney() {
         return paySumMoney;
     }
 
-    public void setPaySumMoney(BigDecimal paySumMoney) {
+    public void setPaySumMoney(Double paySumMoney) {
         this.paySumMoney = paySumMoney;
     }
 
@@ -102,6 +109,22 @@ public class BuyOrder implements Serializable {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

@@ -185,7 +185,7 @@ public class CustomerController {
     /**
      * @author zheng.hu
      * @date 2020/3/16 23:13
-     * @description 冻结用户
+     * @description 冻结用户或解冻
      */
     @RequestMapping(value = "/freezeCustomer")
     @ResponseBody

@@ -6,12 +6,12 @@ import com.huzheng.entity.Login;
 import com.huzheng.service.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 /**
  * @Author 胡正
@@ -36,8 +36,10 @@ public class AdminLoginController {
         if (checkResult != null){
             HttpSession session = request.getSession();
             session.setAttribute("username",checkResult.getUsername());
+            String token = UUID.randomUUID().toString();
             resultModel.setDto(checkResult);
             resultModel.setMsg("ok");
+            resultModel.setToken(token);
             return resultModel;
         }else {
             resultModel.setMsg("error");

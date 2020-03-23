@@ -9,7 +9,7 @@ import java.util.List;
  * 订单(BuyOrder)表数据库访问层
  *
  * @author zheng.hu
- * @since 2020-03-14 23:51:33
+ * @since 2020-03-23 10:40:31
  */
 public interface IBuyOrderDao extends BaseMapper<BuyOrder> {
 
