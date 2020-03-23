@@ -3,7 +3,9 @@ package com.huzheng.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -24,6 +26,8 @@ public class BuyOrder implements Serializable {
     /**
     * 购买时间
     */
+    @Column(name = "create_date")
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date buyTime;
     /**
     * 支付总金额

@@ -1,9 +1,11 @@
 package com.huzheng.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.dto.BuyOrderDto;
+import com.huzheng.dto.QueryBuyOrderDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.service.base.IBaseService;
 
-import java.util.List;
 
 /**
  * 订单(BuyOrder)表服务接口
@@ -20,5 +22,14 @@ public interface IBuyOrderService extends IBaseService<BuyOrder> {
      * @return 是否成功
      */
     boolean deleteById(Integer id);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/23 11:20
+     * @description 分页查询
+     */
+    Page<BuyOrderDto> queryPage(QueryBuyOrderDto queryDto);
+
+
     
 }
