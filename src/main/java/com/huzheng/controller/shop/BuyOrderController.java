@@ -57,7 +57,15 @@ public class BuyOrderController {
      * @description 改变订单状态
      */
     @PostMapping("/changeOrderStatus")
-    public void changeOrderStatus(Integer status) {
+    public void changeOrderStatus(Integer status,Integer id) {
+        if (id != null && status != null) {
+            BuyOrder buyOrder =new BuyOrder();
+            buyOrder.setId(id);
+            buyOrder.setOrderStatus(status);
+            this.buyOrderService._updateById(buyOrder);
+        }else {
+            throw new RuntimeException("参数异常无法更新");
+        }
 
     }
 
