@@ -9,7 +9,7 @@ import java.util.List;
  * (News)表数据库访问层
  *
  * @author zheng.hu
- * @since 2020-03-11 20:59:47
+ * @since 2020-03-24 18:14:31
  */
 public interface INewsDao extends BaseMapper<News> {
 

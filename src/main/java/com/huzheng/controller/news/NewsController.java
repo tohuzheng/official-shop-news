@@ -1,5 +1,7 @@
 package com.huzheng.controller.news;
 
+import cn.hutool.core.util.StrUtil;
+import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.entity.News;
 import com.huzheng.service.INewsService;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * (News)表控制层
  *
  * @author zheng.hu
- * @since 2020-03-11 20:59:47
+ * @since 2020-03-24 18:14:31
  */
 @RestController
 @RequestMapping("news")
@@ -21,15 +23,16 @@ public class NewsController {
     private INewsService newsService;
 
     /**
-     * 通过主键查询单条数据
+     * 添加新闻
      *
-     * @param id 主键
-     * @return 单条数据
+     * @param news
      */
-    @GetMapping("selectOne")
-    public News selectOne(Integer id) {
-        return this.newsService.queryById(id);
+    @PostMapping("addNews")
+    public void addNews(News news) {
+        if (StrUtil.isEmpty(news.getTitle())) {
+            throw new CorrectException("参数为空，添加失败");
+        }
+        newsService.addNews(news);
     }
-
 
 }

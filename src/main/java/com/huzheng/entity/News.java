@@ -1,5 +1,9 @@
 package com.huzheng.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -7,20 +11,22 @@ import java.io.Serializable;
  * (News)实体类
  *
  * @author zheng.hu
- * @since 2020-03-11 20:59:47
+ * @since 2020-03-24 18:14:31
  */
+@TableName("news")
 public class News implements Serializable {
-    private static final long serialVersionUID = -94461564487027516L;
-    
+    private static final long serialVersionUID = 868908355862955894L;
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
     * 新闻标题
     */
     private String title;
     /**
-    * 新闻详细
+    * 新闻详细html格式
     */
-    private String detail;
+    private String detailHtml;
     /**
     * 点赞数
     */
@@ -28,7 +34,7 @@ public class News implements Serializable {
     /**
     * 新闻类型,1行业动态2热点资讯3热点话题
     */
-    private Integer type;
+    private Integer newsType;
     /**
     * 新闻创建时间
     */
@@ -36,11 +42,11 @@ public class News implements Serializable {
     /**
     * 新闻编写者
     */
-    private String createName;
+    private String newsAuthor;
     /**
-    * 图片地址
+    * 新闻详细markdown格式
     */
-    private String imgUrl;
+    private String detailMarkdown;
 
 
     public Integer getId() {
@@ -59,12 +65,12 @@ public class News implements Serializable {
         this.title = title;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getDetailHtml() {
+        return detailHtml;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setDetailHtml(String detailHtml) {
+        this.detailHtml = detailHtml;
     }
 
     public Integer getReadNumber() {
@@ -75,12 +81,12 @@ public class News implements Serializable {
         this.readNumber = readNumber;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getNewsType() {
+        return newsType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setNewsType(Integer newsType) {
+        this.newsType = newsType;
     }
 
     public Date getCreateDate() {
@@ -91,20 +97,20 @@ public class News implements Serializable {
         this.createDate = createDate;
     }
 
-    public String getCreateName() {
-        return createName;
+    public String getNewsAuthor() {
+        return newsAuthor;
     }
 
-    public void setCreateName(String createName) {
-        this.createName = createName;
+    public void setNewsAuthor(String newsAuthor) {
+        this.newsAuthor = newsAuthor;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getDetailMarkdown() {
+        return detailMarkdown;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setDetailMarkdown(String detailMarkdown) {
+        this.detailMarkdown = detailMarkdown;
     }
 
 }

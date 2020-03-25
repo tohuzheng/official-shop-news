@@ -94,4 +94,19 @@ public class ProductController {
 
         return "/img/"+fileName;
     }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/24 16:32
+     * @description 根据路径删除图片
+     */
+    @PostMapping("/deleteImg")
+    public void deleteImg(String url) {
+        String baseImgUrl = "E:";
+        String imgUrl = baseImgUrl+url;
+        File file = new File(imgUrl);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }

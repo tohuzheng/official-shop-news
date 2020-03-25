@@ -79,6 +79,11 @@ public class BuyOrderController {
 
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/3/24 15:37
+     * @description 发货
+     */
     @PostMapping("/deliverGoods")
     public void deliverGoods(Integer id) {
         BuyOrder buyOrder = new BuyOrder();

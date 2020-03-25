@@ -37,6 +37,10 @@
         <property name="suffix" value=".html" />
     </bean>
 
+    <!--异常拦截器-->
+    <bean id="myException" class="com.huzheng.filter.MyExceptionResolver">
+    </bean>
+
     <!--SwaggerApi接口文档配置-->
     <!--重要！将你的SwaggerConfig配置类注入-->
     <bean class="com.huzheng.config.SwaggerConfig"/>
