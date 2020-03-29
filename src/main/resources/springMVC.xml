@@ -48,6 +48,9 @@
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
 
+    <!--加载webSocket配置文件Bean-->
+    <bean class="com.huzheng.config.SpringWebSocketConfig"></bean>
+
     <!--SpringMVC总拦截器,不拦截/admin/login-->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -56,10 +59,12 @@
             <!--不拦截路径,白名单-->
             <mvc:exclude-mapping path="/admin/loginCheck"/>
             <mvc:exclude-mapping path="/news/**"/>
+            <mvc:exclude-mapping path="/alipay/notify"/>
             <mvc:exclude-mapping path="/customer/checkLogin"/>
             <mvc:exclude-mapping path="/customer/getPublicKey"/>
             <mvc:exclude-mapping path="/customer/getVerityCode"/>
             <mvc:exclude-mapping path="/customer/register"/>
+            <mvc:exclude-mapping path="/websocket"/>
             <bean class="com.huzheng.filter.LoginFilter" />
         </mvc:interceptor>
     </mvc:interceptors>

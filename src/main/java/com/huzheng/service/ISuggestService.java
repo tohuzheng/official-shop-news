@@ -1,18 +1,17 @@
 package com.huzheng.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.huzheng.entity.News;
+import com.huzheng.entity.Suggest;
 import com.huzheng.service.base.IBaseService;
 
-import java.util.List;
-
 /**
- * (News)表服务接口
+ * (Suggest)表服务接口
  *
  * @author zheng.hu
- * @since 2020-03-24 18:14:31
+ * @since 2020-03-29 17:06:38
  */
-public interface INewsService extends IBaseService<News> {
+public interface ISuggestService extends IBaseService<Suggest> {
 
     /**
      * 通过主键删除数据
@@ -24,16 +23,9 @@ public interface INewsService extends IBaseService<News> {
 
     /**
      * @author zheng.hu
-     * @date 2020/3/25 17:12
-     * @description 添加新闻资讯
-     */
-    void addNews(News news);
-
-    /**
-     * @author zheng.hu
-     * @date 2020/3/26 23:20
+     * @date 2020/3/29 17:14
      * @description 分页查询
      */
-    Page<News> queryPage(Page page,News news);
+    Page queryPage(Page page);
     
 }

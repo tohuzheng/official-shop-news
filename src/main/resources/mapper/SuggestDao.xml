@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.ISuggestDao">
+
+    <resultMap type="com.huzheng.entity.Suggest" id="SuggestMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="suggestContent" column="suggest_content" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SuggestMap">
+        select
+          id, suggest_content, create_date
+        from official_shop.suggest
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SuggestMap">
+        select
+          id, suggest_content, create_date
+        from official_shop.suggest
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SuggestMap">
+        select
+          id, suggest_content, create_date
+        from official_shop.suggest
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="suggestContent != null and suggestContent != ''">
+                and suggest_content = #{suggestContent}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insertSuggest" keyProperty="id" useGeneratedKeys="true">
+        insert into official_shop.suggest(suggest_content, create_date)
+        values (#{suggestContent}, #{createDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="updateSuggest">
+        update official_shop.suggest
+        <set>
+            <if test="suggestContent != null and suggestContent != ''">
+                suggest_content = #{suggestContent},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteByIdSuggest">
+        delete from official_shop.suggest where id = #{id}
+    </delete>
+
+</mapper>

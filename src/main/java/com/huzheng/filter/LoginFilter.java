@@ -25,10 +25,12 @@ public class LoginFilter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        String username = (String)session.getAttribute("username");
-        if (StrUtil.isNotEmpty(username)){
+        Object username = session.getAttribute("userInfo");
+
+        if (username != null){
             return true;
         }
+
         // 清空返回流
         response.reset();
         // 获取返回写出流对象

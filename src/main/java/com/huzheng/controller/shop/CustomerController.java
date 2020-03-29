@@ -16,10 +16,11 @@ import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/checkLogin")
     @ResponseBody
-    public Customer checkLogin(LoginDto loginDto){
+    public Customer checkLogin(LoginDto loginDto, HttpServletRequest request){
 
         String ciphertext = loginDto.getPassword();
         RedisString redisString = RedisString.getInstans();
@@ -57,8 +58,12 @@ public class CustomerController {
         }
 
         Customer checkResult=customerService.checkLogin(loginDto);
-        // 登录成功
+
         if (checkResult != null){
+            // 登录成功
+            HttpSession session = request.getSession();
+            session.setAttribute("userInfo",checkResult);
+
             redisString.delete(loginDto.getKeyNo());
             return checkResult;
         }

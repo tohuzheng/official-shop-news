@@ -1,5 +1,10 @@
 package com.huzheng.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.commoms.utils.CloumnNameUtils;
 import com.huzheng.entity.News;
 import com.huzheng.dao.INewsDao;
 import com.huzheng.service.INewsService;
@@ -9,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (News)表服务实现类
@@ -42,5 +48,19 @@ public class INewsServiceImpl extends IBaseServiceImpl<INewsDao, News> implement
     public void addNews(News news) {
         news.setCreateDate(new Date());
         this._insert(news);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/26 23:20
+     * @description 分页查询
+     */
+    @Override
+    public Page<News> queryPage(Page page, News news) {
+        QueryWrapper<News> queryWrapper =new QueryWrapper<>();
+        Map<String, Object> map = BeanUtil.beanToMap(news);
+        queryWrapper.allEq(CloumnNameUtils.toUnder(map),false);
+        Page<News> iPage = (Page<News>) this._selectPage(page, queryWrapper);
+        return iPage;
     }
 }
