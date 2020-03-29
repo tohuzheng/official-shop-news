@@ -2,9 +2,9 @@ package com.huzheng.controller.shop;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.nosql.redis.RedisDS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.huzheng.commoms.redis.RedisString;
 import com.huzheng.commoms.utils.EmailUtils;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.commoms.utils.ResultModel;
@@ -12,13 +12,14 @@ import com.huzheng.commoms.utils.RsaUtils;
 import com.huzheng.dto.KeyDto;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.dto.QueryCustomerDto;
+import com.huzheng.dto.VerityCodeDto;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import redis.clients.jedis.Jedis;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -47,8 +48,10 @@ public class CustomerController {
     public Customer checkLogin(LoginDto loginDto, HttpServletRequest request){
 
         String ciphertext = loginDto.getPassword();
-        RedisString redisString = RedisString.getInstans();
-        String privateKey = redisString.getValueByKey(loginDto.getKeyNo());
+        // 从Redis中获取私钥
+        Jedis jedis = RedisDS.create().getJedis();
+        String privateKey = jedis.get(loginDto.getKeyNo());
+
         try {
             // 解密
             String password1 = RsaUtils.decodeRsa(ciphertext, privateKey);
@@ -63,8 +66,9 @@ public class CustomerController {
             // 登录成功
             HttpSession session = request.getSession();
             session.setAttribute("userInfo",checkResult);
-
-            redisString.delete(loginDto.getKeyNo());
+            // 使用完毕，从redis中删除私钥
+            jedis.del(loginDto.getKeyNo());
+            jedis.close();
             return checkResult;
         }
         return null;
@@ -85,9 +89,10 @@ public class CustomerController {
         keyDto.setKeyNo(keyNo);
         keyDto.setPublicKey(keys.get("public"));
         // 存入Redis中
-        RedisString redisString = RedisString.getInstans();
         String rsaPrivate = keys.get("private");
-        redisString.setData(keyNo, rsaPrivate, -1);
+        Jedis jedis = RedisDS.create().getJedis();
+        jedis.set(keyNo, rsaPrivate);
+        jedis.close();
 
         return keyDto;
     }
@@ -95,21 +100,26 @@ public class CustomerController {
     /**
      * @author zheng.hu
      * @date 2020/3/11 19:48
-     * @description 注册时获取邮箱验证码
+     * @description 注册时获取邮箱验证码,返回验证码和验证码keyNo
      */
     @RequestMapping(value = "/getVerityCode")
     @ResponseBody
-    public ResultModel getVerityCode(String token,String email){
-        RedisString redisString = RedisString.getInstans();
-        String value = redisString.getValueByKey(token);
-        if (StrUtil.isNotEmpty(value)){
-
+    public ResultModel getVerityCode(String email){
+        ResultModel resultModel = new ResultModel();
+        if (StrUtil.isNotEmpty(email)){
             Integer verityCode = EmailUtils.sendVerifyCode(email);
-            ResultModel resultModel = new ResultModel(verityCode.toString(), token);
-
+            String verityCodeKey = UUID.randomUUID().toString();
+            Jedis jedis = RedisDS.create().getJedis();
+            jedis.setex(verityCodeKey,60*60,verityCode+"");
+            jedis.close();
+            VerityCodeDto dto =new VerityCodeDto();
+            dto.setVerityCode(verityCode+"");
+            dto.setVerityCodeKeyNo(verityCodeKey);
+            resultModel.setDto(dto);
             return resultModel;
         }else {
-            ResultModel resultModel = new ResultModel("获取验证码失败");
+            resultModel.setMsg("获取验证码失败");
+            resultModel.setCode("405");
             return resultModel;
         }
     }
@@ -121,10 +131,15 @@ public class CustomerController {
      */
     @RequestMapping(value = "/register")
     @ResponseBody
-    public void registerUser(Customer customer,String keyNo){
-        // 获的密钥
-        RedisString redisString = RedisString.getInstans();
-        String privateKey = redisString.getValueByKey(keyNo);
+    public ResultModel registerUser(Customer customer, String keyNo, String verityCodeKey,String verityCode){
+        // 获取验证码,获的密钥
+        Jedis jedis = RedisDS.create().getJedis();
+        String privateKey = jedis.get(keyNo);
+        String verity = jedis.get(verityCodeKey);
+        if (verityCode != verity) {
+            return new ResultModel("验证码错误");
+        }
+
         try {
             // 解密
             String password1 = RsaUtils.decodeRsa(customer.getPassword(), privateKey);
@@ -135,7 +150,10 @@ public class CustomerController {
         // 添加顾客
         customerService.insert(customer);
         // 添加成功，删除密钥
-        redisString.delete(keyNo);
+        jedis.del(keyNo);
+        jedis.del(verityCodeKey);
+        jedis.close();
+        return new ResultModel("ok");
     }
 
     /**
@@ -168,7 +186,6 @@ public class CustomerController {
     @RequestMapping(value = "/queryAllByPage")
     @ResponseBody
     public Page<Customer> queryAllByPage(QueryCustomerDto queryCustomerDto){
-
         return customerService.queryAllByLimit(queryCustomerDto);
     }
 

@@ -1,0 +1,25 @@
+#----- 默认（公有）配置
+# 地址，默认localhost
+host = localhost
+# 端口，默认6379
+port = 6379
+# 超时，默认2000
+timeout = 2000
+# 连接超时，默认timeout
+connectionTimeout = 2000
+# 读取超时，默认timeout
+soTimeout = 2000
+# 密码，默认无
+password =
+# 数据库序号，默认0
+database = 0
+# 客户端名，默认"Hutool"
+clientName = Hutool
+# SSL连接，默认false
+ssl = false;
+# 最大空闲连接数, 默认8个
+maxIdle = 10
+# 最小空闲连接数, 默认0
+minIdle = 0
+# 最大连接数, 默认8个
+maxTotal = 15
