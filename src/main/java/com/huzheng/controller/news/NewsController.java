@@ -1,12 +1,18 @@
 package com.huzheng.controller.news;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.nosql.redis.RedisDS;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.entity.News;
 import com.huzheng.service.INewsService;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
+import java.util.List;
 
 /**
  * (News)表控制层
@@ -80,4 +86,42 @@ public class NewsController {
         }
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 16:29
+     * @description 查询最热三条数据
+     * @param newsType
+     */
+    @PostMapping("/queryMaxHotThree")
+    public List<News> queryMaxHotThree(Integer newsType) {
+        return newsService.queryMaxHotThree(newsType);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 16:52
+     * @description 通过标题模糊分页查询
+     * @param page
+     * @param title
+     */
+    @PostMapping("/searchByTitleLike")
+    public Page<News> searchByTitleLike(Page page, String title) {
+        return newsService.searchByTitleLike(page, title);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 17:55
+     * @description 统计阅读量
+     * @param id 新闻的id
+     */
+    @PostMapping("/readNumberAdd")
+    public void readNumberAdd(Integer id){
+        if (id != null) {
+            Jedis jedis = RedisDS.create().getJedis();
+            jedis.select(1);
+            jedis.incr(id+"");
+            jedis.close();
+        }
+    }
 }

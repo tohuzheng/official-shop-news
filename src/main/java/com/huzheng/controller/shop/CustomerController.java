@@ -17,6 +17,7 @@ import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
@@ -45,8 +46,8 @@ public class CustomerController {
      */
     @RequestMapping(value = "/checkLogin")
     @ResponseBody
-    public Customer checkLogin(LoginDto loginDto, HttpServletRequest request){
-
+    public ResultModel checkLogin(LoginDto loginDto, HttpServletRequest request){
+        ResultModel resultModel =new ResultModel();
         String ciphertext = loginDto.getPassword();
         // 从Redis中获取私钥
         Jedis jedis = RedisDS.create().getJedis();
@@ -69,9 +70,18 @@ public class CustomerController {
             // 使用完毕，从redis中删除私钥
             jedis.del(loginDto.getKeyNo());
             jedis.close();
-            return checkResult;
+            resultModel.setMsg("ok");
+            resultModel.setToken(UUID.randomUUID().toString());
+            checkResult.setPassword("");
+            resultModel.setDto(checkResult);
+            return resultModel;
+        }else {
+            // 登录失败
+            resultModel.setMsg("用户名或者密码错误");
+            resultModel.setCode("401");
+            return resultModel;
         }
-        return null;
+
     }
 
     /**
@@ -109,9 +119,11 @@ public class CustomerController {
         if (StrUtil.isNotEmpty(email)){
             Integer verityCode = EmailUtils.sendVerifyCode(email);
             String verityCodeKey = UUID.randomUUID().toString();
+            // 把验证码存入Redis设置1小时过期
             Jedis jedis = RedisDS.create().getJedis();
             jedis.setex(verityCodeKey,60*60,verityCode+"");
             jedis.close();
+            // 把验证码和验证码的key也发到前端
             VerityCodeDto dto =new VerityCodeDto();
             dto.setVerityCode(verityCode+"");
             dto.setVerityCodeKeyNo(verityCodeKey);
@@ -119,7 +131,7 @@ public class CustomerController {
             return resultModel;
         }else {
             resultModel.setMsg("获取验证码失败");
-            resultModel.setCode("405");
+            resultModel.setCode("401");
             return resultModel;
         }
     }
@@ -238,5 +250,19 @@ public class CustomerController {
         IPage<Customer> customerIPage = customerService._selectPage(page, queryWrapper);
         IPage<Map<String, Object>> mapIPage = customerService._selectMapsPage(page, queryWrapper);
         return mapIPage;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/30 22:26
+     * @description 获取用户名
+     * @param request
+     */
+    @GetMapping("/getUserName")
+    @ResponseBody
+    public String getUserName (HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer userInfo = (Customer) session.getAttribute("userInfo");
+        return userInfo.getUsername();
     }
 }

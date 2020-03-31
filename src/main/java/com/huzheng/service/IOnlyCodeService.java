@@ -1,6 +1,7 @@
 package com.huzheng.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.dto.OnlyCodeVerifyDto;
 import com.huzheng.entity.OnlyCode;
 import com.huzheng.service.base.IBaseService;
 
@@ -28,5 +29,21 @@ public interface IOnlyCodeService extends IBaseService<OnlyCode> {
      * @description
      */
     Page<OnlyCode> queryOnlyCodePage(Page<OnlyCode> page, OnlyCode onlyCode);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 14:06
+     * @description 根据uuid查询产品信息
+     * @param uuid
+     */
+    OnlyCodeVerifyDto queryOnlyCodeByUuid(String uuid);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 21:24
+     * @description 批量添加唯一防伪码
+     * @param
+     */
+    void excelAddCode(String excelPath);
     
 }

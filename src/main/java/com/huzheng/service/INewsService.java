@@ -35,5 +35,30 @@ public interface INewsService extends IBaseService<News> {
      * @description 分页查询
      */
     Page<News> queryPage(Page page,News news);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 16:28
+     * @description 查询最热
+     * @param type
+     */
+    List<News> queryMaxHotThree(Integer type);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 16:53
+     * @description 通过标题模糊查询
+     * @param page
+     * @param title
+     */
+    Page<News> searchByTitleLike(Page page, String title);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 19:56
+     * @description 同步更新阅读数
+     * @param
+     */
+    void syncNewsReadNumber();
     
 }

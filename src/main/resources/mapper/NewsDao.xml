@@ -11,6 +11,7 @@
         <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
         <result property="newsAuthor" column="news_author" jdbcType="VARCHAR"/>
         <result property="detailMarkdown" column="detail_markdown" jdbcType="VARCHAR"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
@@ -101,5 +102,22 @@
     <delete id="deleteByIdNews">
         delete from official_shop.news where id = #{id}
     </delete>
+
+    <!--查询最热三条数据-->
+    <select id="queryMaxHotThree" resultMap="NewsMap">
+        select * from news
+        <where>
+            <if test="type != null">
+                and news_type=#{type}
+            </if>
+        </where>
+        order by read_number desc
+        limit 0,3
+    </select>
+
+    <!--同步更新阅读数-->
+    <update id="updateReadNumber">
+        update news set read_number=read_number+#{addNumber} where id=#{id}
+    </update>
 
 </mapper>

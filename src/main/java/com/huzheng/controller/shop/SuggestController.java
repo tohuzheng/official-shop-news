@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * (Suggest)表控制层
  *
@@ -42,6 +44,7 @@ public class SuggestController {
      */
     @PostMapping("/addSuggest")
     public void addSuggest(Suggest suggest) {
+        suggest.setCreateDate(new Date());
         this.suggestService._insert(suggest);
     }
 

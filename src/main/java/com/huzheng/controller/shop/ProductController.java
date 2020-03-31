@@ -60,7 +60,7 @@ public class ProductController {
     }
 
     @PostMapping("/addProductImg")
-    public String addProductImg(MultipartFile file, HttpServletRequest request){
+    public String addProductImg(MultipartFile file){
         String basePath = "E:/img/";
         String fileName = UUID.randomUUID().toString()+".png";
         String savePath = basePath+fileName;

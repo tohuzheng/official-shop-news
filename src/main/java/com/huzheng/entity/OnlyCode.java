@@ -32,7 +32,7 @@ public class OnlyCode implements Serializable {
     /**
     * 生产日期
     */
-    @Column(name = "create_date")
+    @Column(name = "manufacture_date")
     @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date manufactureDate;
 

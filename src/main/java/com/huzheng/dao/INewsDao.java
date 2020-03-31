@@ -63,4 +63,21 @@ public interface INewsDao extends BaseMapper<News> {
      */
     int deleteByIdNews(Integer id);
 
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 16:21
+     * @description 查询最热的三条数据
+     * @param type
+     */
+    List<News> queryMaxHotThree(Integer type);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 19:53
+     * @description 增加阅读数
+     * @param id
+     * @param addNumber
+     */
+    void updateReadNumber(@Param("id")Integer id,@Param("addNumber")Integer addNumber);
+
 }

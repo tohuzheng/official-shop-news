@@ -3,7 +3,9 @@ package com.huzheng.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -38,6 +40,8 @@ public class News implements Serializable {
     /**
     * 新闻创建时间
     */
+    @Column(name = "createDate")
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date createDate;
     /**
     * 新闻编写者
@@ -47,6 +51,11 @@ public class News implements Serializable {
     * 新闻详细markdown格式
     */
     private String detailMarkdown;
+
+    /**
+     * 标题附带图片
+     */
+    private String imgUrl;
 
 
     public Integer getId() {
@@ -113,4 +122,11 @@ public class News implements Serializable {
         this.detailMarkdown = detailMarkdown;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }
