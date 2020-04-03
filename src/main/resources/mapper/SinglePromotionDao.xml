@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.ISinglePromotionDao">
+
+    <resultMap type="com.huzheng.entity.SinglePromotion" id="SinglePromotionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="promotionType" column="promotion_type" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="presenterId" column="presenter_id" jdbcType="INTEGER"/>
+        <result property="reduceMoney" column="reduce_money" jdbcType="NUMERIC"/>
+        <result property="productNum" column="product_num" jdbcType="INTEGER"/>
+        <result property="sumMoney" column="sum_money" jdbcType="NUMERIC"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="overTime" column="over_time" jdbcType="TIMESTAMP"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="isEffective" column="is_effective" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SinglePromotionMap">
+        select
+          id, name, promotion_type, product_id, presenter_id, reduce_money, product_num, sum_money, start_time, over_time, create_date, is_effective
+        from official_shop.single_promotion
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="promotionType != null">
+                and promotion_type = #{promotionType}
+            </if>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            <if test="presenterId != null">
+                and presenter_id = #{presenterId}
+            </if>
+            <if test="reduceMoney != null">
+                and reduce_money = #{reduceMoney}
+            </if>
+            <if test="productNum != null">
+                and product_num = #{productNum}
+            </if>
+            <if test="sumMoney != null">
+                and sum_money = #{sumMoney}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="overTime != null">
+                and over_time = #{overTime}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="isEffective != null">
+                and is_effective = #{isEffective}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

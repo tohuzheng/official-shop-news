@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.ICouponDao">
+
+    <resultMap type="com.huzheng.entity.Coupon" id="CouponMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+        <result property="amount" column="amount" jdbcType="NUMERIC"/>
+        <result property="perLimit" column="per_limit" jdbcType="INTEGER"/>
+        <result property="minPoint" column="min_point" jdbcType="NUMERIC"/>
+        <result property="useType" column="use_type" jdbcType="INTEGER"/>
+        <result property="effectiveTimeType" column="effective_time_type" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="overTime" column="over_time" jdbcType="TIMESTAMP"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="effectiveDay" column="effective_day" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CouponMap">
+        select
+          id, name, count, amount, per_limit, min_point, use_type, effective_time_type, start_time, over_time, code, effective_day
+        from official_shop.coupon
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="count != null">
+                and count = #{count}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount}
+            </if>
+            <if test="perLimit != null">
+                and per_limit = #{perLimit}
+            </if>
+            <if test="minPoint != null">
+                and min_point = #{minPoint}
+            </if>
+            <if test="useType != null">
+                and use_type = #{useType}
+            </if>
+            <if test="effectiveTimeType != null">
+                and effective_time_type = #{effectiveTimeType}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="overTime != null">
+                and over_time = #{overTime}
+            </if>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="effectiveDay != null">
+                and effective_day = #{effectiveDay}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

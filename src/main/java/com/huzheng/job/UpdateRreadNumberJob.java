@@ -31,7 +31,7 @@ public class UpdateRreadNumberJob {
     public void updateNewsReadNumber(){
         Long start = System.currentTimeMillis();
         logger.info("同步阅读数开始");
-        newsService.syncNewsReadNumber();
+        //newsService.syncNewsReadNumber();
         Long over = System.currentTimeMillis();
         logger.info(String.format("同步阅读数结束,耗时：%d 毫秒", over-start));
     }

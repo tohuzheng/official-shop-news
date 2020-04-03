@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.commoms.utils.CloumnNameUtils;
+import com.huzheng.dao.IBuyOrderDao;
 import com.huzheng.entity.Product;
 import com.huzheng.dao.IProductDao;
 import com.huzheng.service.IProductService;
 import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +27,8 @@ import java.util.Map;
 public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product> implements IProductService {
     @Autowired
     private IProductDao productDao;
+    @Autowired
+    private IBuyOrderDao buyOrderDao;
 
     /**
      * 通过主键删除数据
@@ -59,5 +64,41 @@ public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product
         queryWrapper.allEq(CloumnNameUtils.toUnder(map), false);
         IPage iPage = this._selectPage(page, queryWrapper);
         return iPage;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 0:03
+     * @description 上架时间最新的6个商品
+     * @param
+     */
+    @Override
+    public List<Product> queryNewProduct() {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        Page<Product> page = new Page<>();
+        page.setSize(6);
+        IPage<Product> productIPage = this._selectPage(page, queryWrapper);
+        return productIPage.getRecords();
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 10:16
+     * @description 获取销量最多的商品6个
+     * @param
+     */
+    @Override
+    public List<Product> queryRecommendProduct() {
+        List<Integer> skuIds = buyOrderDao.querySellMaxSex();
+        List<Product> productList = new ArrayList<>();
+        for (Integer id : skuIds) {
+            Product product = productDao.selectById(id);
+            if (product != null) {
+                productList.add(product);
+            }
+        }
+
+        return productList;
     }
 }

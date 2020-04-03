@@ -41,4 +41,20 @@ public interface IProductService extends IBaseService<Product> {
      */
     IPage<Product> queryPageByEntity(Page page, Product product);
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 0:01
+     * @description 查询最新产品6个
+     * @param
+     */
+    List<Product> queryNewProduct();
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 0:01
+     * @description 查询推荐产品6个，销量最高的
+     * @param
+     */
+    List<Product> queryRecommendProduct();
+
 }

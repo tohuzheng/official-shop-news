@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IDiscountDao">
+
+    <resultMap type="com.huzheng.entity.Discount" id="DiscountMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="productClassName" column="product_class_name" jdbcType="VARCHAR"/>
+        <result property="discountAmount" column="discount_amount" jdbcType="NUMERIC"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="overTime" column="over_time" jdbcType="TIMESTAMP"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+        <result property="isPushHomeBanner" column="is_push_home_banner" jdbcType="INTEGER"/>
+        <result property="isPushCategoryBanner" column="is_push_category_banner" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="isEffective" column="is_effective" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DiscountMap">
+        select
+          id, title, product_class_name, discount_amount, start_time, over_time, img_url, is_push_home_banner, is_push_category_banner, create_date, is_effective
+        from official_shop.discount
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="productClassName != null and productClassName != ''">
+                and product_class_name = #{productClassName}
+            </if>
+            <if test="discountAmount != null">
+                and discount_amount = #{discountAmount}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="overTime != null">
+                and over_time = #{overTime}
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                and img_url = #{imgUrl}
+            </if>
+            <if test="isPushHomeBanner != null">
+                and is_push_home_banner = #{isPushHomeBanner}
+            </if>
+            <if test="isPushCategoryBanner != null">
+                and is_push_category_banner = #{isPushCategoryBanner}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="isEffective != null">
+                and is_effective = #{isEffective}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -63,4 +63,5 @@ public interface IProductDao extends BaseMapper<Product> {
      */
     int deleteByIdProduct(Integer id);
 
+
 }

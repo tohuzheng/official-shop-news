@@ -34,4 +34,12 @@ public interface IBuyOrderDao extends BaseMapper<BuyOrder> {
      */
     int deleteByIdBuyOrder(Integer id);
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 0:09
+     * @description 查询销量最多的6个商品，返回商品id集合
+     * @param
+     */
+    List<Integer> querySellMaxSex();
+
 }

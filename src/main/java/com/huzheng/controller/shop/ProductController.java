@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -42,7 +43,6 @@ public class ProductController {
      */
     @PostMapping("/queryPage")
     public IPage queryPage(Page page, Product product) {
-
         return productService.queryPageByEntity(page,product);
     }
 
@@ -59,6 +59,12 @@ public class ProductController {
         productService._updateById(product);
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 22:07
+     * @description 图片上传，返回存贮路径
+     * @param file
+     */
     @PostMapping("/addProductImg")
     public String addProductImg(MultipartFile file){
         String basePath = "E:/img/";
@@ -109,4 +115,43 @@ public class ProductController {
             file.delete();
         }
     }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 23:57
+     * @description 前台控制方法开始，获取最新产品，6个
+     * @param
+     */
+    @GetMapping("/queryNewProduct")
+    public List<Product> queryNewProduct(){
+        return productService.queryNewProduct();
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/3/31 23:59
+     * @description 查询推荐产品6个，根据销量最高的6个
+     * @param
+     */
+    @GetMapping("/queryRecommendProduct")
+    public List<Product> queryRecommendProduct(){
+        List<Product> productList = productService.queryRecommendProduct();
+        return productList;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/1 22:10
+     * @description 根据id查询产品
+     * @param id
+     */
+    @GetMapping("/queryOne")
+    public Product queryOneById(Integer id){
+        if (id == null) {
+            return null;
+        }else {
+            return this.productService._selectById(id);
+        }
+    }
+
 }

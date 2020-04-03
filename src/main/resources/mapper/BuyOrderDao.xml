@@ -69,4 +69,13 @@
         delete from official_shop.buy_order where id = #{id}
     </delete>
 
+    <!--销量最多的6个商品-->
+    <select id="querySellMaxSex" resultType="java.lang.Integer">
+        SELECT product_id,SUM(buy_number) AS sales_volume
+        FROM order_detail
+        GROUP BY product_id
+        ORDER BY sales_volume
+        DESC LIMIT 0,6
+    </select>
+
 </mapper>
