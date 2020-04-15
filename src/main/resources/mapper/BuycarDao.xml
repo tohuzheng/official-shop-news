@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IBuycarDao">
+
+    <resultMap type="com.huzheng.entity.Buycar" id="BuycarMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="productNumber" column="product_number" jdbcType="INTEGER"/>
+        <result property="consumerId" column="consumer_id" jdbcType="INTEGER"/>
+        <result property="singlePromotionId" column="single_promotion_id" jdbcType="INTEGER"/>
+        <result property="discountamount" column="discountAmount" jdbcType="NUMERIC"/>
+        <result property="productImgurl" column="product_imgUrl" jdbcType="VARCHAR"/>
+        <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="productSize" column="product_size" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+    </resultMap>
+
+
+
+</mapper>
