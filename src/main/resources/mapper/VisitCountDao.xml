@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IVisitCountDao">
+
+    <resultMap type="com.huzheng.entity.VisitCount" id="VisitCountMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="visitDate" column="visit_date" jdbcType="OTHER"/>
+        <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
+        <result property="loginCount" column="login_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="querySumView" resultType="java.lang.Integer">
+        select sum(view_count) from visit_count
+    </select>
+
+</mapper>

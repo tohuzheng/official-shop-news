@@ -1,6 +1,11 @@
 package com.huzheng.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * (OrderDetail)实体类
@@ -8,9 +13,11 @@ import java.io.Serializable;
  * @author zheng.hu
  * @since 2020-03-23 10:51:22
  */
+@TableName("order_detail")
 public class OrderDetail implements Serializable {
     private static final long serialVersionUID = -14079966127257548L;
-    
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
     * 关联订单id
@@ -36,6 +43,19 @@ public class OrderDetail implements Serializable {
     * 商品尺寸
     */
     private String productSize;
+    /**
+     *总金额
+     */
+    private BigDecimal sumAmount;
+    /**
+     *优惠金额
+     */
+    private BigDecimal reduceAmount;
+
+    /**
+     *赠品id
+     */
+    private Integer presenterId;
 
 
     public Integer getId() {
@@ -94,4 +114,27 @@ public class OrderDetail implements Serializable {
         this.productSize = productSize;
     }
 
+    public BigDecimal getSumAmount() {
+        return sumAmount;
+    }
+
+    public void setSumAmount(BigDecimal sumAmount) {
+        this.sumAmount = sumAmount;
+    }
+
+    public BigDecimal getReduceAmount() {
+        return reduceAmount;
+    }
+
+    public void setReduceAmount(BigDecimal reduceAmount) {
+        this.reduceAmount = reduceAmount;
+    }
+
+    public Integer getPresenterId() {
+        return presenterId;
+    }
+
+    public void setPresenterId(Integer presenterId) {
+        this.presenterId = presenterId;
+    }
 }

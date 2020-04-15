@@ -1,11 +1,14 @@
 package com.huzheng.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.dto.CustomerParam;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.dto.QueryCustomerDto;
+import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Customer;
 import com.huzheng.dao.CustomerDao;
 import com.huzheng.service.ICustomerService;
@@ -123,6 +126,7 @@ public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer
     @Override
     public Customer checkLogin(LoginDto loginDto) {
         Customer customer = customerDao.loginCheck(loginDto);
+        customer.setPassword("");
         return customer;
     }
 
@@ -158,4 +162,24 @@ public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer
         this._updateById(customer);
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/7 16:49
+     * @description 查询某天的注册量
+     * @param date
+     */
+    @Override
+    public Integer queryOneDayNewUserCount(Date date) {
+        if (date == null) {
+            return null;
+        }
+        //一天的开始，结果：2020-03-01 00:00:00
+        Date beginOfDay = DateUtil.beginOfDay(date);
+        //一天的结束，结果：2020-03-01 23:59:59
+        Date endOfDay = DateUtil.endOfDay(date);
+        QueryWrapper<Customer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("create_date", beginOfDay, endOfDay);
+        Integer count = this._selectCount(queryWrapper);
+        return count;
+    }
 }

@@ -8,6 +8,8 @@ import com.huzheng.dto.QueryCustomerDto;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.base.IBaseService;
 
+import java.util.Date;
+
 /**
  * 顾客信息(Customer)表服务接口
  *
@@ -76,6 +78,14 @@ public interface ICustomerService extends IBaseService<Customer> {
      * @description 修改客户状态
      */
     void freezeCustomer(Integer id, Integer status);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/7 16:46
+     * @description 查询某天的注册量
+     * @param date
+     */
+    Integer queryOneDayNewUserCount(Date date);
 
 
 }

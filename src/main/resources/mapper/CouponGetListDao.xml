@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.ICouponGetListDao">
+
+    <resultMap type="com.huzheng.entity.CouponGetList" id="CouponGetListMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="couponId" column="coupon_id" jdbcType="INTEGER"/>
+        <result property="customerId" column="customer_id" jdbcType="INTEGER"/>
+        <result property="customerName" column="customer_name" jdbcType="VARCHAR"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="getType" column="get_type" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="useTime" column="use_time" jdbcType="TIMESTAMP"/>
+        <result property="useStatus" column="use_status" jdbcType="INTEGER"/>
+        <result property="effectiveTimeStart" column="effective_time_start" jdbcType="TIMESTAMP"/>
+        <result property="effectiveTimeOver" column="effective_time_over" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+</mapper>

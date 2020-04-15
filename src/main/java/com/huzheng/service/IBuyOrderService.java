@@ -6,6 +6,8 @@ import com.huzheng.dto.QueryBuyOrderDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.service.base.IBaseService;
 
+import java.util.Date;
+
 
 /**
  * 订单(BuyOrder)表服务接口
@@ -29,6 +31,22 @@ public interface IBuyOrderService extends IBaseService<BuyOrder> {
      * @description 分页查询
      */
     Page<BuyOrderDto> queryPage(QueryBuyOrderDto queryDto);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/7 16:40
+     * @description 查询某天的订单量
+     * @param date
+     */
+    Integer queryOneDayOrderCount(Date date);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/15 14:37
+     * @description 结算生成订单
+     * @param buycarIds
+     */
+    void generateOrder(Integer[] buycarIds);
 
 
     

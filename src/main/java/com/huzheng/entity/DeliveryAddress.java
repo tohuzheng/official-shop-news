@@ -1,16 +1,21 @@
 package com.huzheng.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * 收货地址表(DeliveryAddress)实体类
  *
  * @author zheng.hu
- * @since 2020-03-23 10:52:12
+ * @since 2020-04-15 22:07:35
  */
+@TableName(value = "delivery_address")
 public class DeliveryAddress implements Serializable {
-    private static final long serialVersionUID = 146653516448472266L;
-    
+    private static final long serialVersionUID = -19283742691168452L;
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
     * 收件人姓名
@@ -23,7 +28,7 @@ public class DeliveryAddress implements Serializable {
     /**
     * 收件人电话
     */
-    private String tel;
+    private String receiverTel;
     /**
     * 顾客id
     */
@@ -54,12 +59,12 @@ public class DeliveryAddress implements Serializable {
         this.address = address;
     }
 
-    public String getTel() {
-        return tel;
+    public String getReceiverTel() {
+        return receiverTel;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
+    public void setReceiverTel(String receiverTel) {
+        this.receiverTel = receiverTel;
     }
 
     public Integer getCustomerId() {

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Column;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -32,9 +33,13 @@ public class BuyOrder implements Serializable {
     /**
     * 支付总金额
     */
-    private Double paySumMoney;
+    private BigDecimal paySumMoney;
     /**
-    * 支付状态,0-支付中,1-支付成功,2-支付失败
+     * 支付总金额
+     */
+    private BigDecimal reduceSumMoney;
+    /**
+    * 支付状态,0-支付中,1-支付成功,2-支付失败,3-已退款
     */
     private Integer payStatus;
     /**
@@ -57,6 +62,10 @@ public class BuyOrder implements Serializable {
     * 备注
     */
     private String remark;
+    /**
+     * 使用优惠券id
+     */
+    private String couponId;
 
 
     public Integer getId() {
@@ -75,11 +84,11 @@ public class BuyOrder implements Serializable {
         this.buyTime = buyTime;
     }
 
-    public Double getPaySumMoney() {
+    public BigDecimal getPaySumMoney() {
         return paySumMoney;
     }
 
-    public void setPaySumMoney(Double paySumMoney) {
+    public void setPaySumMoney(BigDecimal paySumMoney) {
         this.paySumMoney = paySumMoney;
     }
 
@@ -131,4 +140,19 @@ public class BuyOrder implements Serializable {
         this.remark = remark;
     }
 
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
+    public BigDecimal getReduceSumMoney() {
+        return reduceSumMoney;
+    }
+
+    public void setReduceSumMoney(BigDecimal reduceSumMoney) {
+        this.reduceSumMoney = reduceSumMoney;
+    }
 }

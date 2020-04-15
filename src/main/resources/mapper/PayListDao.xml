@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huzheng.dao.IPayListDao">
+
+    <resultMap type="com.huzheng.entity.PayList" id="PayListMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="tradeNo" column="trade_no" jdbcType="VARCHAR"/>
+        <result property="outTradeNo" column="out_trade_no" jdbcType="VARCHAR"/>
+        <result property="orderCode" column="order_code" jdbcType="VARCHAR"/>
+        <result property="totalAmount" column="total_amount" jdbcType="NUMERIC"/>
+        <result property="payDate" column="pay_date" jdbcType="TIMESTAMP"/>
+        <result property="payStatus" column="pay_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+</mapper>

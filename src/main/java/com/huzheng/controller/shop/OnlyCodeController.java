@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.commoms.utils.ExcelSaveUtils;
 import com.huzheng.dto.OnlyCodeVerifyDto;
 import com.huzheng.entity.OnlyCode;
 import com.huzheng.service.IOnlyCodeService;
@@ -89,24 +90,8 @@ public class OnlyCodeController {
 
     @PostMapping("/excelImport")
     public String excelImportCode(MultipartFile file) {
-        String baseUrl = "E://img/temp/";
-        String fileName = UUID.randomUUID().toString()+".xlsx";
-        // 查看Base目录是否存在，不存在就创建
-        File file1 = new File(baseUrl);
-        if (!file1.exists()) {
-            file1.mkdirs();
-        }
-        // 文件流不为空则保存
-        if (!file.isEmpty()) {
-            try {
-                OutputStream out = new FileOutputStream(baseUrl+fileName);
-                InputStream in = file.getInputStream();
-                IoUtil.copy(in, out);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        this.onlyCodeService.excelAddCode(baseUrl+fileName);
+        String excelPath = ExcelSaveUtils.saveExcel(file);
+        this.onlyCodeService.excelAddCode(excelPath);
         return "ok";
     }
 

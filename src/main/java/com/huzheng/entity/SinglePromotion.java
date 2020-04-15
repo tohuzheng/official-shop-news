@@ -51,7 +51,7 @@ public class SinglePromotion implements Serializable {
     /**
     * M元
     */
-    private Double sumMoney;
+    private BigDecimal sumMoney;
     /**
     * 活动开始时间
     */
@@ -132,11 +132,11 @@ public class SinglePromotion implements Serializable {
         this.productNum = productNum;
     }
 
-    public Double getSumMoney() {
+    public BigDecimal getSumMoney() {
         return sumMoney;
     }
 
-    public void setSumMoney(Double sumMoney) {
+    public void setSumMoney(BigDecimal sumMoney) {
         this.sumMoney = sumMoney;
     }
 

@@ -3,6 +3,7 @@ package com.huzheng.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.huzheng.dto.ProductDetailDto;
 import com.huzheng.entity.Product;
 import com.huzheng.service.base.IBaseService;
 
@@ -56,5 +57,21 @@ public interface IProductService extends IBaseService<Product> {
      * @param
      */
     List<Product> queryRecommendProduct();
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/6 16:49
+     * @description 通过excel中的商品id查询商品数据
+     * @param
+     */
+    List<Product> queryProductByExcel(String excelPath);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/7 23:39
+     * @description 查询产品详细
+     * @param id
+     */
+    ProductDetailDto queryProductDetail(Integer id);
 
 }

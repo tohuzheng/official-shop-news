@@ -1,5 +1,7 @@
 package com.huzheng.controller.alipay;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
@@ -11,12 +13,17 @@ import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.huzheng.dto.*;
+import com.huzheng.entity.PayList;
+import com.huzheng.service.IPayListService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +36,9 @@ import java.util.Set;
 @Controller
 @RequestMapping("/alipay")
 public class AliPayController {
+
+    @Autowired
+    IPayListService payListService;
 
     // 商户私钥，您的PKCS8格式RSA2私钥
     private static final String APP_PRIVATE_KEY="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDZCXgTclEQxe6T0rNzMg/uYCtQ/KnWliflTGOfnWPUFfz+8g3DgTQduH59EQFFHfb8hbDhI0Ci6uhtfDYzlSwQHWEmlvmmeTsKCCHlWRqZM8sIikEz54sH/jKTRDe5rFi+FL1lwEKwjbarlnmUqmH8GzNdGMGohhfTWoSgqKfcF2Q1BEJsoaP9xmii88mHbhP1VJ19FxpWxaCSofK2caiBS0//KHpTe1czgpTrcU832pFUqygm/jLwBa10O/mtewZKlsAUko4tKi5pXnqSVFQ0Oi427RXOHL6cJzQFxCtoPbmXbhRnmGayJgTDE1VSlEW3Bq27tJ335stcSe/6xljjAgMBAAECggEAbhA6P4pih+IIehiI/mst3xIQBXMMYhElzEev4dr8LCq2cUepKTMVjdjo9F2ySi3G+gqGR7YL6lK8agFqrz//53Auu1Ym5oBmK1Eyd093iKfWV89c/4h1XilP1pTquZMoMcTsw3P7nfNP5rZZk8XQCPx2UMjkNKVD4d/ukFbXQWn/7hfdp3xMo3aTXiDTCg6RsjwmHcShS+uofY0Gctd4PrTMSZlKUl+B1NJGBb3OUe3RyYNHOg28qWSzMOml1SGMAwDE7Z8P8vGH7MYGBYY185eUVqiARZzDKPW71jkVaUeE0MDSTLkZHKbgvvK24B2IblXx3WA/sGV0kyiadeq0CQKBgQD48QNZBtXZi5rZKbsald0ca5Xaibs6p+D8z1fTYpzOJEBATvZwA7ujUYwmE/UCPbrt69CO2vmRlSF6QxPIJnLrir98LUBtp1M/53zo/NVTRMzC2scD3aP7k6Rz5DHdQuCw84SY5qMCQCsUv8FcOh9Ywn7O3nPhAZuLNRP7Npo0pwKBgQDfMN8fLtxP66vXyADePzhvCiSeoA5OjUtQVztVSTuvBNTPoR3l9Q7scPSGHodyMOGUZPiiPLx1PZRrGfMvbxydoTtgySorKv1uTv9RdF9jVNRlyf+cZRkwLtceuI2d+1xqs5j7GlUF34VOY1i04av8+F0iYkU0iMCeAZDxkM81ZQKBgQDsIRCf3Y/zLizPWHoVmZmGX7Zg+MwTszICG1qfM6axEkmvtjajwaa2H5/kboG0goFRNKE7IBIiOWbr5bxZ2b6gFZfUXcgDOvgIYbdl+I0Q0u221nZ4AECPXVhcZVO3ILyonBRmRD7S37L9l3X92VPqiXJnHzKjdzbnMI2nd/+FeQKBgCQ6fJ1FMAHREW3PS0TIIlLz5InTFT9u9ACwiDMJ1iRMtnaVgpLnOmrq0uZKYlYI1TUPRsSe80BcpJDV/4F9mbmEiGznem7TZZvYOt1v9GPdSzTSmyk5x+LoV4bnEiXIvXGcgYKQ/agcZjkZKzcBQrenYQbJyM4EPK/pNSvhA6F5AoGAXpBTrC7BFbErOlJs77WKYhJ0JoOnR/aPVcR7vr8nIRd3XN4m0kZDWVd50FSgF7yI8i0JWXvI2o+GXoPyxekd+VETdC13RAWQXERLty8NPRicOJTfZobncYhynUvc7MPcEmYcZT+QKXJbo4RfsgkVMe44+ed4VZPo8+VVN5gOOzI=";
@@ -45,23 +55,25 @@ public class AliPayController {
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     private static final String NOTIFY_URL = "http://127.0.0.1/fuwuchuang_demo/return_url.jsp";
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    private static final String RETURN_URL = "http://4b117991.ngrok.io/alipay/notify";
+    private static final String RETURN_URL = " http://4a7d966b.ngrok.io/alipay/notify";
 
     @RequestMapping("/createPay")
     public void createPayOrder(HttpServletRequest httpRequest,
-                                 HttpServletResponse httpResponse) throws IOException {
+                                 HttpServletResponse httpResponse, String amount) throws IOException {
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, SING_TYPE);
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();// 创建API对应的request
 
         alipayRequest.setReturnUrl(RETURN_URL);
         alipayRequest.setNotifyUrl(NOTIFY_URL);// 在公共参数中设置回跳和通知地址
 
-        String currentTime = System.currentTimeMillis()+""; // 商户订单号
+        String currentTime = "S"+System.currentTimeMillis(); // 商户订单号
         BizContentVO bizContentVO=new BizContentVO();
         bizContentVO.setBody("森马牛仔裤2020秋款 XXL");
         bizContentVO.setOut_trade_no(currentTime);
         bizContentVO.setSubject("企业产品在线展示销售平台");
-        bizContentVO.setTotal_amount("0.02");
+        if (StrUtil.isNotEmpty(amount) && StringUtils.isNumeric(amount)) {
+            bizContentVO.setTotal_amount(amount);
+        }
 
         alipayRequest.setBizContent(JSON.toJSONString(bizContentVO));
         System.out.println("bizCode:"+currentTime);
@@ -84,16 +96,22 @@ public class AliPayController {
      * @description 支付成功异步回调
      */
     @RequestMapping("/notify")
-    @ResponseBody
-    public Map<String, String> alipayNotify(HttpServletRequest request){
+    public String alipayNotify(HttpServletRequest request){
         Map<String, String[]> parameterMap = request.getParameterMap();
         Map<String,String> responseResult = new HashMap<>();
         Set<String> keys = parameterMap.keySet();
         for (String key:keys) {
             responseResult.put(key,parameterMap.get(key)[0]);
         }
-
-        return responseResult;
+        PayList payList = new PayList();
+        payList.setOrderCode(responseResult.get("out_trade_no"));
+        payList.setOutTradeNo(responseResult.get("out_trade_no"));
+        payList.setPayDate(DateUtil.parse(responseResult.get("timestamp"), "yyyy-MM-dd HH:mm:ss"));
+        payList.setTradeNo(responseResult.get("trade_no"));
+        payList.setTotalAmount(new BigDecimal(responseResult.get("total_amount")));
+        payListService._insert(payList);
+        System.out.println(responseResult.toString());
+        return "redirect:http://localhost:8083/#/index";
     }
 
     /**
@@ -219,5 +237,6 @@ public class AliPayController {
         }
         return null;
     }
+
 
 }

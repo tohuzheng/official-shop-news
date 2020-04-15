@@ -36,12 +36,24 @@ public class DiscountController {
         return  discountService.queryPage(page,discount);
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/4 22:19
+     * @description 添加打折活动
+     * @param discount
+     */
     @PostMapping("/addDiscount")
     public void addDiscount(Discount discount){
         discount.setCreateDate(new Date());
         this.discountService._insert(discount);
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/4 22:19
+     * @description 更新打折活动
+     * @param discount
+     */
     @PostMapping("/updateDiscountInfo")
     public void updateDiscountInfo(Discount discount){
         if (discount.getId() == null) {

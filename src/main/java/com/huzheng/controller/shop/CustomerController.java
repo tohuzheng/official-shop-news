@@ -123,9 +123,9 @@ public class CustomerController {
             Jedis jedis = RedisDS.create().getJedis();
             jedis.setex(verityCodeKey,60*60,verityCode+"");
             jedis.close();
-            // 把验证码和验证码的key也发到前端
+            // 把验证码的key发到前端
             VerityCodeDto dto =new VerityCodeDto();
-            dto.setVerityCode(verityCode+"");
+            //dto.setVerityCode(verityCode+"");
             dto.setVerityCodeKeyNo(verityCodeKey);
             resultModel.setDto(dto);
             return resultModel;
@@ -148,7 +148,11 @@ public class CustomerController {
         Jedis jedis = RedisDS.create().getJedis();
         String privateKey = jedis.get(keyNo);
         String verity = jedis.get(verityCodeKey);
-        if (verityCode != verity) {
+
+        if (StrUtil.isEmpty(verity) || StrUtil.isEmpty(verityCode)) {
+            return new ResultModel("验证码错误");
+        }
+        if (!verityCode.equals(verity)) {
             return new ResultModel("验证码错误");
         }
 

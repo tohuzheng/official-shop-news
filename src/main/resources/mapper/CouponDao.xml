@@ -15,6 +15,7 @@
         <result property="overTime" column="over_time" jdbcType="TIMESTAMP"/>
         <result property="code" column="code" jdbcType="VARCHAR"/>
         <result property="effectiveDay" column="effective_day" jdbcType="INTEGER"/>
+        <result property="isEffective" column="is_effective" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--通过实体作为筛选条件查询-->
@@ -62,5 +63,14 @@
         </where>
     </select>
 
+    <select id="queryOneProductCouponByProductId" resultMap="CouponMap">
+        select c.id, name, count, amount, per_limit, min_point, use_type, effective_time_type,
+        start_time, over_time, code, effective_day,is_effective
+        from coupon c, coupon_product_relation cpr
+        where c.id = cpr.coupon_id and cpr.product_id = #{productId}
+        and NOW() > c.start_time  and c.over_time > NOW()
+        and c.use_type = 2
+        and c.is_effective = 1
+    </select>
 
 </mapper>

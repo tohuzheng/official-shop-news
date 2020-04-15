@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Column;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -31,7 +32,7 @@ public class Discount implements Serializable {
     /**
     * 折扣数
     */
-    private Double discountAmount;
+    private BigDecimal discountAmount;
     /**
     * 活动开始时间
     */
@@ -92,11 +93,11 @@ public class Discount implements Serializable {
         this.productClassName = productClassName;
     }
 
-    public Double getDiscountAmount() {
+    public BigDecimal getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Double discountAmount) {
+    public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
     }
 

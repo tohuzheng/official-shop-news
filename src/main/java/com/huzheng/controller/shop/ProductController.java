@@ -3,6 +3,7 @@ package com.huzheng.controller.shop;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.dto.ProductDetailDto;
 import com.huzheng.entity.Product;
 import com.huzheng.service.IProductService;
 import org.springframework.web.bind.annotation.*;
@@ -152,6 +153,18 @@ public class ProductController {
         }else {
             return this.productService._selectById(id);
         }
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/7 23:30
+     * @description 查询产品详细
+     * @param
+     */
+    @PostMapping("/queryProductDetail")
+    public ProductDetailDto queryProductDetail(Integer id) {
+        ProductDetailDto productDetailDto = productService.queryProductDetail(id);
+        return productDetailDto;
     }
 
 }

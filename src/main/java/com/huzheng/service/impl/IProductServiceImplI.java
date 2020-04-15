@@ -1,21 +1,27 @@
 package com.huzheng.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.commoms.utils.CloumnNameUtils;
 import com.huzheng.dao.IBuyOrderDao;
+import com.huzheng.dto.ProductDetailDto;
+import com.huzheng.entity.Coupon;
+import com.huzheng.entity.Discount;
 import com.huzheng.entity.Product;
 import com.huzheng.dao.IProductDao;
-import com.huzheng.service.IProductService;
+import com.huzheng.entity.SinglePromotion;
+import com.huzheng.service.*;
 import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * (Product)表服务实现类
@@ -29,6 +35,17 @@ public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product
     private IProductDao productDao;
     @Autowired
     private IBuyOrderDao buyOrderDao;
+
+    @Autowired
+    private ICouponService couponService;
+    @Autowired
+    private ICouponProductRelationService couponProductRelationService;
+    @Autowired
+    private ICouponProductCategoryRelationService categoryRelationService;
+    @Autowired
+    private ISinglePromotionService singlePromotionService;
+    @Autowired
+    private IDiscountService discountService;
 
     /**
      * 通过主键删除数据
@@ -100,5 +117,82 @@ public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product
         }
 
         return productList;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/6 16:56
+     * @description 解析excel，根据excel中的商品id查询商品信息
+     * @param excelPath
+     */
+    @Override
+    public List<Product> queryProductByExcel(String excelPath) {
+        if (StrUtil.isNotEmpty(excelPath)) {
+            ExcelReader reader = ExcelUtil.getReader(excelPath);
+            List<Product> products = reader.readAll(Product.class);
+            List<Integer> productIds = new LinkedList<>();
+            for (Product pro : products) {
+                productIds.add(pro.getId());
+            }
+            QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("id", productIds);
+            List<Product> productList = this._selectList(queryWrapper);
+            return  productList;
+        }
+        return null;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/11 9:41
+     * @description 查询商品详细
+     * @param id
+     */
+    @Override
+    public ProductDetailDto queryProductDetail(Integer id) {
+        ProductDetailDto pd = new ProductDetailDto();
+        Product product = this._selectById(id);
+        if (id == null) {
+            throw new CorrectException("参数错误，id为空");
+        }
+        BeanUtil.copyProperties(product, pd);
+
+        // 查询打折活动
+        QueryWrapper<Discount> queryDiscountWrapper = new QueryWrapper<>();
+        queryDiscountWrapper.eq("product_class_name", product.getProductClassName());
+        queryDiscountWrapper.le("start_time", new Date());
+        queryDiscountWrapper.ge("over_time",new Date());
+        queryDiscountWrapper.eq("is_effective", 1);
+        Discount discount = discountService._selectOne(queryDiscountWrapper);
+        if (discount == null) {
+            QueryWrapper<Discount> queryDiscountWrapper2 = new QueryWrapper<>();
+            queryDiscountWrapper2.eq("product_class_name", "全场通用");
+            queryDiscountWrapper2.le("start_time", new Date());
+            queryDiscountWrapper2.ge("over_time",new Date());
+            queryDiscountWrapper2.eq("is_effective", 1);
+            Discount discount2 = discountService._selectOne(queryDiscountWrapper2);
+            if (discount2 != null) {
+                pd.setDiscountAmount(discount2.getDiscountAmount());
+            }
+        }else {
+            pd.setDiscountAmount(discount.getDiscountAmount());
+        }
+
+        // 查询促销活动
+        QueryWrapper<SinglePromotion> querySinglePromotionWrapper = new QueryWrapper<>();
+        querySinglePromotionWrapper.eq("product_id", id);
+        querySinglePromotionWrapper.le("start_time", new Date());
+        querySinglePromotionWrapper.ge("over_time",new Date());
+        querySinglePromotionWrapper.eq("is_effective", 1);
+        SinglePromotion singlePromotion = singlePromotionService._selectOne(querySinglePromotionWrapper);
+        if (singlePromotion != null) {
+            pd.setSinglePromotion(singlePromotion);
+        }
+
+        // 查询是否有指定商品优惠券
+        Coupon coupon = couponService.queryOneByProductId(id);
+        pd.setCoupon(coupon);
+
+        return pd;
     }
 }

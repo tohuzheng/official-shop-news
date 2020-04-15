@@ -21,5 +21,11 @@ public interface ICouponDao extends BaseMapper<Coupon> {
      */
     List<Coupon> queryAll(Coupon coupon);
 
-
+    /**
+     * @author zheng.hu
+     * @date 2020/4/11 9:47
+     * @description 商详页指定产品优惠券，查询使用类型为指定产品的优惠卷
+     * @param productId 产品id
+     */
+    Coupon queryOneProductCouponByProductId(Integer productId);
 }

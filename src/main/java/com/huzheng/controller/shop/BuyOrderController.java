@@ -72,11 +72,11 @@ public class BuyOrderController {
     /**
      * @author zheng.hu
      * @date 2020/3/23 11:06
-     * @description 添加订单
+     * @description 生成订单
      */
-    @PostMapping("/addBuyOrder")
-    public void addBuyOrder() {
-
+    @PostMapping("/generateOrder")
+    public void generateOrder(Integer[] buycarIds) {
+        buyOrderService.generateOrder(buycarIds);
     }
 
     /**
