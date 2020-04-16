@@ -4,23 +4,28 @@ import com.huzheng.entity.Coupon;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author 胡正
  * @Date 2020/4/11 16:27
- * @Description 结算单dto
+ * @Description 确认订单dto
  */
-public class ClearingBillDto {
+public class ConfirmOrderDto {
 
     /**
      * 订单总金额
      */
     private BigDecimal orderSumMoney;
+    /**
+     * 优惠总金额
+     */
+    private BigDecimal reduceSumMoney;
 
     /**
      * 可用优惠券
      */
-    private List<Coupon> usableCoupon;
+    private Set<Coupon> usableCoupon;
 
     /**
      * 每一件商品计算的结果
@@ -31,15 +36,23 @@ public class ClearingBillDto {
         return orderSumMoney;
     }
 
+    public BigDecimal getReduceSumMoney() {
+        return reduceSumMoney;
+    }
+
+    public void setReduceSumMoney(BigDecimal reduceSumMoney) {
+        this.reduceSumMoney = reduceSumMoney;
+    }
+
     public void setOrderSumMoney(BigDecimal orderSumMoney) {
         this.orderSumMoney = orderSumMoney;
     }
 
-    public List<Coupon> getUsableCoupon() {
+    public Set<Coupon> getUsableCoupon() {
         return usableCoupon;
     }
 
-    public void setUsableCoupon(List<Coupon> usableCoupon) {
+    public void setUsableCoupon(Set<Coupon> usableCoupon) {
         this.usableCoupon = usableCoupon;
     }
 

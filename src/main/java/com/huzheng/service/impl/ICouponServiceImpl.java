@@ -174,7 +174,7 @@ public class ICouponServiceImpl extends IBaseServiceImpl<ICouponDao, Coupon> imp
      * @param product
      */
     @Override
-    public Coupon queryOneByIdAndProduct(Integer id, Product product) {
+    public Coupon queryOneById(Integer id, Product product) {
         Coupon coupon = this._selectById(id);
         Integer useType = coupon.getUseType();
 

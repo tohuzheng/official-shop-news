@@ -16,5 +16,16 @@
         <result property="effectiveTimeOver" column="effective_time_over" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-
+    <select id="queryOneCouponById" resultType="com.huzheng.entity.Coupon">
+        select cp.id as id,
+        cp.amount as amount,
+        cp.min_point as minPoint,
+        cp.name as name,
+        cp.use_type as useType
+        from coupon_get_list cgl, coupon cp
+        where cgl.coupon_id = cp.id
+        and now()>cgl.effective_time_start
+        and cgl.effective_time_over>now()
+        and cgl.use_status = 0
+    </select>
 </mapper>

@@ -1,7 +1,7 @@
 package com.huzheng.service;
 
 import com.huzheng.dto.AddCarDto;
-import com.huzheng.dto.ClearingBillDto;
+import com.huzheng.dto.ConfirmOrderDto;
 import com.huzheng.entity.Buycar;
 import com.huzheng.service.base.IBaseService;
 
@@ -34,5 +34,5 @@ public interface IBuycarService extends IBaseService<Buycar> {
      * @description 根据购物车记录生成结算单
      * @param ids
      */
-    ClearingBillDto generateClearingBill(Integer[] ids);
+    ConfirmOrderDto generateClearingBill(Integer[] ids, Integer customerId);
 }

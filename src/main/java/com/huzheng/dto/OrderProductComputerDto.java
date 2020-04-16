@@ -1,7 +1,5 @@
 package com.huzheng.dto;
 
-import com.huzheng.entity.Product;
-
 import java.math.BigDecimal;
 
 /**
@@ -11,9 +9,9 @@ import java.math.BigDecimal;
  */
 public class OrderProductComputerDto {
     /**
-     * 主键id
+     * 购物车id
      */
-    private Integer id;
+    private Integer buycarId;
     /**
      * 商品表id
      */
@@ -23,33 +21,41 @@ public class OrderProductComputerDto {
      */
     private Integer productNumber;
     /**
-     * 顾客表id
+     * 产品图片
      */
-    private Integer customerId;
+    private String imgurl;
     /**
-     * 促销活动id
-     */
-    private Integer singlePromotionId;
-    /**
-     * 折扣数
-     */
-    private BigDecimal discountAmount;
-    /**
-     * 图片
-     */
-    private String productImgurl;
-    /**
-     * 名称
+     * 产品名称
      */
     private String productName;
     /**
-     * 规格
+     * 产品类目
+     */
+    private String productClassName;
+    /**
+     * 产品规格
      */
     private String productSize;
     /**
      * 单价
      */
     private BigDecimal price;
+    /**
+     * 促销活动id
+     */
+    private Integer singlePromotionId;
+    /**
+     * 促销活动名称
+     */
+    private Integer singlePromotionName;
+    /**
+     * 折扣数
+     */
+    private BigDecimal discountAmount;
+    /**
+     * 折扣活动id
+     */
+    private Integer discountId;
     /**
      * 合计金额
      */
@@ -59,16 +65,20 @@ public class OrderProductComputerDto {
      */
     private BigDecimal reduceMoney;
     /**
-     * 赠品
+     * 赠品id
      */
-    private Product product;
+    private Integer presenterId;
+    /**
+     * 赠品名称
+     */
+    private String presenterName;
 
-    public Integer getId() {
-        return id;
+    public Integer getBuycarId() {
+        return buycarId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setBuycarId(Integer buycarId) {
+        this.buycarId = buycarId;
     }
 
     public Integer getProductId() {
@@ -87,14 +97,6 @@ public class OrderProductComputerDto {
         this.productNumber = productNumber;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
     public Integer getSinglePromotionId() {
         return singlePromotionId;
     }
@@ -111,12 +113,12 @@ public class OrderProductComputerDto {
         this.discountAmount = discountAmount;
     }
 
-    public String getProductImgurl() {
-        return productImgurl;
+    public String getImgurl() {
+        return imgurl;
     }
 
-    public void setProductImgurl(String productImgurl) {
-        this.productImgurl = productImgurl;
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 
     public String getProductName() {
@@ -159,11 +161,43 @@ public class OrderProductComputerDto {
         this.reduceMoney = reduceMoney;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getPresenterId() {
+        return presenterId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setPresenterId(Integer presenterId) {
+        this.presenterId = presenterId;
+    }
+
+    public Integer getSinglePromotionName() {
+        return singlePromotionName;
+    }
+
+    public void setSinglePromotionName(Integer singlePromotionName) {
+        this.singlePromotionName = singlePromotionName;
+    }
+
+    public Integer getDiscountId() {
+        return discountId;
+    }
+
+    public void setDiscountId(Integer discountId) {
+        this.discountId = discountId;
+    }
+
+    public String getPresenterName() {
+        return presenterName;
+    }
+
+    public void setPresenterName(String presenterName) {
+        this.presenterName = presenterName;
+    }
+
+    public String getProductClassName() {
+        return productClassName;
+    }
+
+    public void setProductClassName(String productClassName) {
+        this.productClassName = productClassName;
     }
 }

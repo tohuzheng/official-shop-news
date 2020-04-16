@@ -65,7 +65,11 @@ public class BuyOrder implements Serializable {
     /**
      * 使用优惠券id
      */
-    private String couponId;
+    private Integer couponId;
+    /**
+     * 顾客id
+     */
+    private Integer customerId;
 
 
     public Integer getId() {
@@ -140,11 +144,11 @@ public class BuyOrder implements Serializable {
         this.remark = remark;
     }
 
-    public String getCouponId() {
+    public Integer getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(String couponId) {
+    public void setCouponId(Integer couponId) {
         this.couponId = couponId;
     }
 
@@ -154,5 +158,13 @@ public class BuyOrder implements Serializable {
 
     public void setReduceSumMoney(BigDecimal reduceSumMoney) {
         this.reduceSumMoney = reduceSumMoney;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

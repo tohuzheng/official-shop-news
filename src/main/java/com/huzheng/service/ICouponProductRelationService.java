@@ -19,5 +19,12 @@ public interface ICouponProductRelationService extends IBaseService<CouponProduc
      * @return 是否成功
      */
     boolean deleteById(Integer id);
-    
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/16 14:35
+     * @description 根据优惠券id查询优惠券
+     * @param couponId
+     */
+    CouponProductRelation queryOneByCouponId(Integer couponId);
 }

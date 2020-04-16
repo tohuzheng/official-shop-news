@@ -1,5 +1,6 @@
 package com.huzheng.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huzheng.entity.CouponProductCategoryRelation;
 import com.huzheng.dao.ICouponProductCategoryRelationDao;
 import com.huzheng.service.ICouponProductCategoryRelationService;
@@ -31,5 +32,11 @@ public class ICouponProductCategoryRelationServiceImpl extends IBaseServiceImpl<
     public boolean deleteById(Integer id) {
         return this._deleteById(id) > 0;
     }
-    
+
+    @Override
+    public CouponProductCategoryRelation queryOneByCouponId(Integer couponId) {
+        QueryWrapper<CouponProductCategoryRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("coupon_id",couponId);
+        return this._selectOne(queryWrapper);
+    }
 }

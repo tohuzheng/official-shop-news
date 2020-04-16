@@ -20,5 +20,7 @@ public interface ICouponProductCategoryRelationService extends IBaseService<Coup
      * @return 是否成功
      */
     boolean deleteById(Integer id);
+
+    CouponProductCategoryRelation queryOneByCouponId(Integer couponId);
     
 }

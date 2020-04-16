@@ -63,5 +63,5 @@ public interface ICouponService extends IBaseService<Coupon> {
      * @description 根据优惠券id和产品查询优惠券是否能使用
      * @param id
      */
-    Coupon queryOneByIdAndProduct(Integer id, Product product);
+    Coupon queryOneById(Integer id, Product product);
 }

@@ -1,5 +1,6 @@
 package com.huzheng.service;
 
+import com.huzheng.dto.OrderProductComputerDto;
 import com.huzheng.entity.OrderDetail;
 import com.huzheng.service.base.IBaseService;
 
@@ -13,5 +14,5 @@ import java.util.List;
  */
 public interface IOrderDetailService extends IBaseService<OrderDetail> {
 
-    
+    void batchAddOrderDetail(List<OrderProductComputerDto> detailedList,Integer orderId);
 }

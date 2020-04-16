@@ -34,7 +34,7 @@ public class OrderDetail implements Serializable {
     /**
     * 单价
     */
-    private Double price;
+    private BigDecimal price;
     /**
     * 商品名称
     */
@@ -90,11 +90,11 @@ public class OrderDetail implements Serializable {
         this.buyNumber = buyNumber;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

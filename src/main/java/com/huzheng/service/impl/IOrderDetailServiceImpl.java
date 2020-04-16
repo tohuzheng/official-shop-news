@@ -1,5 +1,6 @@
 package com.huzheng.service.impl;
 
+import com.huzheng.dto.OrderProductComputerDto;
 import com.huzheng.entity.OrderDetail;
 import com.huzheng.dao.IOrderDetailDao;
 import com.huzheng.service.IOrderDetailService;
@@ -17,5 +18,28 @@ import java.util.List;
 @Service("orderDetailService")
 public class IOrderDetailServiceImpl extends IBaseServiceImpl<IOrderDetailDao,OrderDetail> implements IOrderDetailService {
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/16 18:41
+     * @description 批量添加数据
+     * @param detailedList
+     */
+    @Override
+    public void batchAddOrderDetail(List<OrderProductComputerDto> detailedList,Integer orderId) {
+        for (OrderProductComputerDto dto : detailedList) {
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderId(orderId);
+            orderDetail.setSumAmount(dto.getSumMoney());
+            orderDetail.setReduceAmount(dto.getReduceMoney());
+            orderDetail.setBuyNumber(dto.getProductNumber());
+            orderDetail.setPrice(dto.getPrice());
+            orderDetail.setProductName(dto.getProductName());
+            orderDetail.setProductSize(dto.getProductSize());
+            if (dto.getPresenterId() != null) {
+                orderDetail.setPresenterId(dto.getPresenterId());
+            }
+            this._insert(orderDetail);
+        }
 
+    }
 }

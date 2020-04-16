@@ -4,10 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.huzheng.commoms.enums.OrderStatus;
+import com.huzheng.commoms.enums.PayStatus;
 import com.huzheng.commoms.enums.SinglePromotionType;
 import com.huzheng.dao.IBuyOrderDao;
 import com.huzheng.dto.BuyOrderDto;
+import com.huzheng.dto.OrderProductComputerDto;
 import com.huzheng.dto.QueryBuyOrderDto;
+import com.huzheng.dto.SubmitOrderDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Buycar;
 import com.huzheng.entity.OrderDetail;
@@ -17,7 +21,6 @@ import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,15 +40,6 @@ public class IBuyOrderServiceImpl extends IBaseServiceImpl<IBuyOrderDao,BuyOrder
 
     @Autowired
     private IBuycarService buycarService;
-
-    @Autowired
-    private IProductService productService;
-
-    @Autowired
-    private ISinglePromotionService singlePromotionService;
-
-    @Autowired
-    private ICouponService couponService;
 
     @Autowired
     private ICouponGetListService couponGetListService;
@@ -104,92 +98,56 @@ public class IBuyOrderServiceImpl extends IBaseServiceImpl<IBuyOrderDao,BuyOrder
     /**
      * @author zheng.hu
      * @date 2020/4/15 14:38
-     * @description 结算生成订单
-     * @param buycarIds
+     * @description 提交生成订单
+     * @param submitOrderDto
+     * @return 返回需要支付的金额
      */
     @Transactional
     @Override
-    public void generateOrder(Integer[] buycarIds) {
-        QueryWrapper<Buycar> queryCarParam = new QueryWrapper<>();
-        queryCarParam.in("id", buycarIds);
-        List<Buycar> buycars = buycarService._selectList(queryCarParam);
-        // 订单明细
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        for (Buycar buycar : buycars) {
-            OrderDetail orderDetail = computerOneCar(buycar);
-            orderDetails.add(orderDetail);
-        }
-        BigDecimal sumAmount = new BigDecimal("0");
-        BigDecimal sumReduceAmount = new BigDecimal("0");
-        for (OrderDetail item : orderDetails) {
-            sumAmount = sumAmount.add(item.getSumAmount());
-            sumReduceAmount = sumReduceAmount.add(item.getReduceAmount());
-        }
+    public void submitOrder(SubmitOrderDto submitOrderDto, String orderCode, String payAmount, Integer customerId) {
         BuyOrder buyOrder = new BuyOrder();
-        buyOrder.setOrderStatus(0);
+        buyOrder.setProductSumNumber(submitOrderDto.getDetailedList().size());
+        buyOrder.setReduceSumMoney(reduceSumMoney(submitOrderDto.getDetailedList()));
+        buyOrder.setPayStatus(PayStatus.PAYING.getValue());
+        buyOrder.setOrderCode(orderCode);
         buyOrder.setBuyTime(new Date());
-        buyOrder.setOrderCode("S"+System.currentTimeMillis());
-        buyOrder.setPayStatus(0);
-        buyOrder.setPaySumMoney(sumAmount);
-        buyOrder.setReduceSumMoney(sumReduceAmount);
-        buyOrder.setProductSumNumber(buycarIds.length);
+        buyOrder.setOrderStatus(OrderStatus.UN_DELIVER.getValue());
+        buyOrder.setAddressId(submitOrderDto.getAddressId());
+        buyOrder.setCustomerId(customerId);
+        buyOrder.setPaySumMoney(new BigDecimal(payAmount));
+        if (submitOrderDto.getCouponId() != null) {
+            buyOrder.setCouponId(submitOrderDto.getCouponId());
+            // 修改优惠券状态
+            couponGetListService.changeUseStatusByCustomerIdAndCouponId(customerId, submitOrderDto.getCouponId());
+        }
         this._insert(buyOrder);
-        int orderId = buyOrder.getId();
-        for (OrderDetail item : orderDetails) {
-            item.setOrderId(orderId);
-            orderDetailService._insert(item);
-        }
+        orderDetailService.batchAddOrderDetail(submitOrderDto.getDetailedList(), buyOrder.getId());
+        buycarService.deleteListByIds(getBuycarIds(submitOrderDto.getDetailedList()));
     }
 
-    private OrderDetail computerOneCar(Buycar buycar){
-        OrderDetail orderDetail = new OrderDetail();
-        int num = buycar.getProductNumber();
-        BigDecimal price = buycar.getPrice();
-        BigDecimal discountAmount = buycar.getDiscountAmount();
-        Integer singlePromotionId = buycar.getSinglePromotionId();
-        BigDecimal sumMoney = price.multiply(new BigDecimal(num+""));
-        BigDecimal reduceSumMoney = new BigDecimal("0");
-
-        if (singlePromotionId != null) {
-            // 促销活动
-            SinglePromotion singlePromotion = singlePromotionService._selectById(singlePromotionId);
-            if (singlePromotion.getPromotionType().equals(SinglePromotionType.SINGLE_REDUCE.getValue())) {
-                // 单品直降
-                BigDecimal reduceMoney = singlePromotion.getReduceMoney();
-                BigDecimal reduce = reduceMoney.multiply(new BigDecimal(num+""));
-                reduceSumMoney=reduceSumMoney.add(reduce);
-                sumMoney = sumMoney.subtract(reduce);
-            }
-            if (singlePromotion.getPromotionType().equals(SinglePromotionType.SINGLE_GIVES.getValue())) {
-                // 单品赠品
-                orderDetail.setPresenterId(singlePromotion.getPresenterId());
-
-            }
-            if (singlePromotion.getPromotionType().equals(SinglePromotionType.N_M.getValue())) {
-                // n元m件
-                int number = singlePromotion.getProductNum();
-                BigDecimal money = singlePromotion.getSumMoney();
-                if (number <= buycar.getProductNumber()) {
-                    int i = buycar.getProductNumber() / number;
-                    BigDecimal pre = money.multiply(new BigDecimal(i));
-                    int lastNum = buycar.getProductNumber() - i*number;
-                    BigDecimal last = buycar.getPrice().multiply(new BigDecimal(lastNum+""));
-                    reduceSumMoney = sumMoney.subtract(pre.add(last));
-                    sumMoney = sumMoney.subtract(reduceSumMoney);
-                }
-            }
-        }
-
-        if (discountAmount != null) {
-            // 打折活动
-            BigDecimal tempSum = new BigDecimal(sumMoney.floatValue()+"");
-            BigDecimal discountAfter = sumMoney.multiply(discountAmount.multiply(new BigDecimal("0.1")));
-            reduceSumMoney.add(tempSum.subtract(discountAfter));
-        }
-        orderDetail.setReduceAmount(reduceSumMoney);
-        orderDetail.setSumAmount(sumMoney);
-        BeanUtil.copyProperties(buycar, orderDetail);
-        orderDetail.setId(null);
-        return orderDetail;
+    @Override
+    public void changeOrderStatusByCode(String orderCode) {
+        QueryWrapper<BuyOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_code",orderCode);
+        BuyOrder buyOrder = new BuyOrder();
+        buyOrder.setPayStatus(1);
+        this._update(buyOrder, queryWrapper);
     }
+
+    private BigDecimal reduceSumMoney(List<OrderProductComputerDto> detailedList){
+        BigDecimal sum = new BigDecimal("0");
+        for (OrderProductComputerDto dto : detailedList) {
+            sum = sum.add(dto.getReduceMoney());
+        }
+        return sum;
+    }
+
+    private List<Integer> getBuycarIds(List<OrderProductComputerDto> detailedList){
+        List<Integer> list = new ArrayList<>();
+        for (OrderProductComputerDto dto : detailedList) {
+            list.add(dto.getBuycarId());
+        }
+        return list;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.huzheng.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.dto.BuyOrderDto;
 import com.huzheng.dto.QueryBuyOrderDto;
+import com.huzheng.dto.SubmitOrderDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.service.base.IBaseService;
 
@@ -43,11 +44,16 @@ public interface IBuyOrderService extends IBaseService<BuyOrder> {
     /**
      * @author zheng.hu
      * @date 2020/4/15 14:37
-     * @description 结算生成订单
-     * @param buycarIds
+     * @description 提交生成订单
+     * @param submitOrderDto
      */
-    void generateOrder(Integer[] buycarIds);
+    void submitOrder(SubmitOrderDto submitOrderDto, String orderCode, String payAmount, Integer customerId);
 
-
-    
+    /**
+     * @author zheng.hu
+     * @date 2020/4/16 20:34
+     * @description 根据订单号修改订单状态
+     * @param orderCode
+     */
+    void changeOrderStatusByCode(String orderCode);
 }

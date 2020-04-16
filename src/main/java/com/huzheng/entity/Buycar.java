@@ -57,6 +57,10 @@ public class Buycar implements Serializable {
     * 单价
     */
     private BigDecimal price;
+    /**
+     * 类目名称
+     */
+    private String productClassName;
 
 
     public Integer getId() {
@@ -139,4 +143,11 @@ public class Buycar implements Serializable {
         this.price = price;
     }
 
+    public String getProductClassName() {
+        return productClassName;
+    }
+
+    public void setProductClassName(String productClassName) {
+        this.productClassName = productClassName;
+    }
 }

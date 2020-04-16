@@ -2,7 +2,7 @@ package com.huzheng.controller.shop;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huzheng.dto.AddCarDto;
-import com.huzheng.dto.ClearingBillDto;
+import com.huzheng.dto.ConfirmOrderDto;
 import com.huzheng.entity.Buycar;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.IBuycarService;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -89,8 +88,10 @@ public class BuycarController {
      * @param ids
      */
     @PostMapping("/generateClearingBill")
-    public ClearingBillDto generateClearingBill(Integer[] ids){
-        ClearingBillDto dto = buycarService.generateClearingBill(ids);
+    public ConfirmOrderDto generateClearingBill(Integer[] ids, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Customer userInfo = (Customer) session.getAttribute("userInfo");
+        ConfirmOrderDto dto = buycarService.generateClearingBill(ids, userInfo.getId());
         return dto;
     }
 
