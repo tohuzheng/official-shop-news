@@ -24,6 +24,9 @@
             <result property="price" column="price"></result>
             <result property="productName" column="product_name"></result>
             <result property="productSize" column="product_size"></result>
+            <result property="productImgUrl" column="product_img_url"></result>
+            <result property="sumAmount" column="sum_amount"></result>
+            <result property="reduceAmount" column="reduce_amount"></result>
         </collection >
     </resultMap>
 
@@ -34,9 +37,13 @@
     -->
     <select id="queryAllPage" resultMap="BuyOrderMap">
         select
-        bo.id as id, buy_time, pay_sum_money, pay_status, product_sum_number, address_id,
-        order_status, order_code, remark, receiver_name, receiver_tel, address, customer_id,
-        od.id as did, order_id, buy_number, price, product_name, product_size, product_id
+        bo.id as id, bo.buy_time as buy_time,bo.pay_sum_money as pay_sum_money,bo.pay_status as pay_status,
+        bo.product_sum_number as product_sum_number, bo.address_id as address_id,
+        bo.order_status as order_status,bo.order_code as order_code,bo.remark as remark,
+        da.receiver_name as receiver_name, da.receiver_tel as receiver_tel,da.address as address,
+        bo.customer_id as customer_id, od.id as did,od.order_id as order_id,od.buy_number as buy_number,
+        od.price as price,od.product_name as product_name,od.product_size as product_size,od.product_id as product_id,
+        od.product_img_url as product_img_url, od.sum_amount as sum_amount, od.reduce_amount as reduce_amount
         from buy_order AS bo,order_detail AS od,delivery_address AS da
         <where>
             <if test="queryDto.payStatus != null">
@@ -56,6 +63,9 @@
             </if>
             <if test="queryDto.startTime != null and queryDto.overTime != null">
                 and bo.buy_time between #{queryDto.startTime} and #{queryDto.overTime}
+            </if>
+            <if test="queryDto.customerId != null">
+                and bo.customer_id = #{queryDto.customerId}
             </if>
             AND bo.`address_id` = da.`id` AND od.`order_id` = bo.`id`
         </where>

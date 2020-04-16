@@ -51,11 +51,14 @@ public class OrderDetail implements Serializable {
      *优惠金额
      */
     private BigDecimal reduceAmount;
-
     /**
      *赠品id
      */
     private Integer presenterId;
+    /**
+     *产品图片
+     */
+    private String productImgUrl;
 
 
     public Integer getId() {
@@ -136,5 +139,13 @@ public class OrderDetail implements Serializable {
 
     public void setPresenterId(Integer presenterId) {
         this.presenterId = presenterId;
+    }
+
+    public String getProductImgUrl() {
+        return productImgUrl;
+    }
+
+    public void setProductImgUrl(String productImgUrl) {
+        this.productImgUrl = productImgUrl;
     }
 }

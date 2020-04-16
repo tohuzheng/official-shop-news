@@ -37,6 +37,10 @@ public class QueryBuyOrderDto {
      */
     private Integer orderStatus;
     /**
+     * 顾客id
+     */
+    private Integer customerId;
+    /**
      * 当前页码
      */
     private Integer current=1;
@@ -115,5 +119,13 @@ public class QueryBuyOrderDto {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

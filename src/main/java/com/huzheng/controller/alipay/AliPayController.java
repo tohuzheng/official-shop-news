@@ -67,7 +67,7 @@ public class AliPayController {
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     private static final String NOTIFY_URL = "http://127.0.0.1/fuwuchuang_demo/return_url.jsp";
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    private static final String RETURN_URL = " http://4a7d966b.ngrok.io/alipay/notify";
+    private static final String RETURN_URL = "http://b22dfb3f.ngrok.io/alipay/notify";
 
     @RequestMapping("/createPay")
     public void createPayOrder(HttpServletResponse httpResponse,HttpServletRequest request,

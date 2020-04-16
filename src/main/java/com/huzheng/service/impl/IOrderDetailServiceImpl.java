@@ -35,6 +35,8 @@ public class IOrderDetailServiceImpl extends IBaseServiceImpl<IOrderDetailDao,Or
             orderDetail.setPrice(dto.getPrice());
             orderDetail.setProductName(dto.getProductName());
             orderDetail.setProductSize(dto.getProductSize());
+            orderDetail.setProductId(dto.getProductId());
+            orderDetail.setProductImgUrl(dto.getImgurl());
             if (dto.getPresenterId() != null) {
                 orderDetail.setPresenterId(dto.getPresenterId());
             }

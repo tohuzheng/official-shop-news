@@ -185,6 +185,7 @@ public class IBuycarServiceImpl extends IBaseServiceImpl<IBuycarDao, Buycar> imp
             dto.setReduceMoney(reduceMoney);
             dto.setSumMoney(sumMoney);
             dto.setBuycarId(buycar.getId());
+            dto.setImgurl(buycar.getProductImgurl());
             BeanUtil.copyProperties(buycar, dto);
 
             return dto;
