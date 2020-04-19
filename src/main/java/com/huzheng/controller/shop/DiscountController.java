@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 促销活动-打折(Discount)表控制层
@@ -63,6 +64,28 @@ public class DiscountController {
             discount.setImgUrl(null);
         }
         discountService._updateById(discount);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 15:36
+     * @description 获取首页banner
+     * @param
+     */
+    @GetMapping("/getHomeDiscountList")
+    public List<Discount> getHomeDiscountList(){
+        return discountService.getDiscountListByFlag("is_push_home_banner");
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 15:36
+     * @description 获取品类banner
+     * @param
+     */
+    @GetMapping("/getCategoryDiscountList")
+    public List<Discount> getCategoryDiscountList(){
+        return discountService.getDiscountListByFlag("is_push_category_banner");
     }
 
 }

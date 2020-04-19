@@ -11,6 +11,8 @@ import com.huzheng.service.IDiscountService;
 import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +56,25 @@ public class IDiscountServiceImpl extends IBaseServiceImpl<IDiscountDao, Discoun
 
         return iPage;
     }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 15:26
+     * @description 获取推送首页或者品类banner活动
+     * @param
+     */
+    @Override
+    public List<Discount> getDiscountListByFlag(String columnName) {
+        QueryWrapper<Discount> queryWrapper = new QueryWrapper<>();
+        if ("is_push_home_banner".equals(columnName)) {
+            queryWrapper.eq("is_push_home_banner",1);
+        }else {
+            queryWrapper.eq("is_push_category_banner",1);
+        }
+        queryWrapper.eq("is_effective",1);
+        queryWrapper.ge("over_time", new Date());
+        List<Discount> list = this._selectList(queryWrapper);
+        return list;
+    }
+
 }

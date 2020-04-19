@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.dto.QueryCustomerDto;
+import com.huzheng.dto.UpdatePasswordDto;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.base.IBaseService;
 
@@ -87,5 +88,11 @@ public interface ICustomerService extends IBaseService<Customer> {
      */
     Integer queryOneDayNewUserCount(Date date);
 
-
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 21:54
+     * @description 修改密码
+     * @param dto
+     */
+    void updatePassword(UpdatePasswordDto dto);
 }

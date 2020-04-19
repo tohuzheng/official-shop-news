@@ -9,15 +9,15 @@ import com.huzheng.commoms.utils.EmailUtils;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.commoms.utils.ResultModel;
 import com.huzheng.commoms.utils.RsaUtils;
-import com.huzheng.dto.KeyDto;
-import com.huzheng.dto.LoginDto;
-import com.huzheng.dto.QueryCustomerDto;
-import com.huzheng.dto.VerityCodeDto;
+import com.huzheng.dto.*;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
@@ -268,5 +268,49 @@ public class CustomerController {
         HttpSession session = request.getSession();
         Customer userInfo = (Customer) session.getAttribute("userInfo");
         return userInfo.getUsername();
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 19:20
+     * @description 退出登录
+     * @param request
+     */
+    @GetMapping("/outLogin")
+    @ResponseBody
+    public void outLogin(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 21:44
+     * @description 获取用户个人信息
+     * @param
+     */
+    @GetMapping("/getPersonInfo")
+    @ResponseBody
+    public Customer getPersonInfo(HttpServletRequest request) {
+        return (Customer) request.getSession().getAttribute("userInfo");
+    }
+
+    @ApiOperation(value = "修改用户信息")
+    @PostMapping("/updatePersonInfo")
+    @ResponseBody
+    public void updatePersonInfo(Customer customer) {
+        customerService._updateById(customer);
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 21:53
+     * @description 修改密码
+     * @param dto
+     */
+    @PostMapping("/updatePassword")
+    @ResponseBody
+    public void updatePassword(UpdatePasswordDto dto) {
+        customerService.updatePassword(dto);
     }
 }

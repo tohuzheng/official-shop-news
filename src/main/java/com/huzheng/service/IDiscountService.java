@@ -30,5 +30,13 @@ public interface IDiscountService extends IBaseService<Discount> {
      * @param discount
      */
     Page<Discount> queryPage(Page page,Discount discount);
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 15:25
+     * @description 获取推送首页或者品类banner活动
+     * @param columnName
+     */
+    List<Discount> getDiscountListByFlag(String columnName);
     
 }

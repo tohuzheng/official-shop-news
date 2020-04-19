@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 /**
  * (CouponGetList)表控制层
@@ -80,6 +81,32 @@ public class CouponGetListController {
             return "该优惠券活动已结束，不可领取";
         }
 
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 22:41
+     * @description 获取顾客领取优惠券
+     * @param request
+     */
+    @GetMapping("/getEffectiveCoupon")
+    public List<Coupon> getEffectiveCoupon(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("userInfo");
+        return couponGetListService.queryCouponByCustomerId(customer.getId());
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 22:50
+     * @description 密令领取优惠券
+     * @param code
+     */
+    @PostMapping("/requireCoupon")
+    public void requireCoupon(String code,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("userInfo");
+        couponGetListService.requireCoupon(code,customer);
     }
 
 }

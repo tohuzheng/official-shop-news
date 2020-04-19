@@ -74,4 +74,11 @@ public interface IProductService extends IBaseService<Product> {
      */
     ProductDetailDto queryProductDetail(Integer id);
 
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 16:58
+     * @description 根据用户id查询产品对比
+     * @param customerName
+     */
+    List<Product> getProductCompareByCustomerId(String customerName);
 }

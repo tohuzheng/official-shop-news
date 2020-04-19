@@ -4,10 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.commoms.utils.Page;
 import com.huzheng.dto.CustomerParam;
 import com.huzheng.dto.LoginDto;
 import com.huzheng.dto.QueryCustomerDto;
+import com.huzheng.dto.UpdatePasswordDto;
 import com.huzheng.entity.BuyOrder;
 import com.huzheng.entity.Customer;
 import com.huzheng.dao.CustomerDao;
@@ -181,5 +183,25 @@ public class ICustomerServiceImpl extends IBaseServiceImpl<CustomerDao, Customer
         queryWrapper.between("create_date", beginOfDay, endOfDay);
         Integer count = this._selectCount(queryWrapper);
         return count;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 21:54
+     * @description 修改密码
+     * @param dto
+     */
+    @Override
+    public void updatePassword(UpdatePasswordDto dto) {
+        QueryWrapper<Customer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", dto.getUsername());
+        queryWrapper.eq("password", dto.getPasswordOld());
+        Customer customer = this._selectOne(queryWrapper);
+        if (customer != null) {
+            customer.setPassword(dto.getPasswordNew());
+            this._updateById(customer);
+        }else {
+            throw new CorrectException("原始密码密码错误，修改失败");
+        }
     }
 }

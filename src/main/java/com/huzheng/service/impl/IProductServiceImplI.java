@@ -2,6 +2,8 @@ package com.huzheng.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.nosql.redis.RedisDS;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,16 +12,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.commoms.utils.CloumnNameUtils;
 import com.huzheng.dao.IBuyOrderDao;
+import com.huzheng.dao.IProductDao;
 import com.huzheng.dto.ProductDetailDto;
 import com.huzheng.entity.Coupon;
 import com.huzheng.entity.Discount;
 import com.huzheng.entity.Product;
-import com.huzheng.dao.IProductDao;
 import com.huzheng.entity.SinglePromotion;
 import com.huzheng.service.*;
 import com.huzheng.service.base.IBaseServiceImpl;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
@@ -194,5 +197,33 @@ public class IProductServiceImplI extends IBaseServiceImpl< IProductDao, Product
         pd.setCoupon(coupon);
 
         return pd;
+    }
+
+    /**
+     * @author zheng.hu
+     * @date 2020/4/19 18:51
+     * @description 根据客户名称获取客户的对比数据
+     * @param customerName
+     */
+    @Override
+    public List<Product> getProductCompareByCustomerId(String customerName) {
+        if (StrUtil.isEmpty(customerName)) {
+            throw new CorrectException("参数错误，顾客登录名称不可为空");
+        }
+        Jedis jedis = RedisDS.create().getJedis();
+        jedis.select(2);
+        Map<String, String> map = jedis.hgetAll(customerName);
+        jedis.close();
+        List<Product> list = new LinkedList<>();
+        Set<String> keySet = map.keySet();
+        for (String k : keySet) {
+            String val = map.get(k);
+            Product product = JSONUtil.toBean(JSONUtil.parseObj(val), Product.class);
+            if (product != null) {
+                list.add(product);
+            }
+        }
+
+        return list;
     }
 }

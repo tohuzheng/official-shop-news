@@ -3,6 +3,7 @@ package com.huzheng.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.entity.Coupon;
 import com.huzheng.entity.CouponGetList;
+import com.huzheng.entity.Customer;
 import com.huzheng.service.base.IBaseService;
 
 import java.util.List;
@@ -22,4 +23,8 @@ public interface ICouponGetListService extends IBaseService<CouponGetList> {
     Coupon queryOneCouponById(Integer id);
 
     void changeUseStatusByCustomerIdAndCouponId(Integer customerId,Integer couponId);
+
+    List<Coupon> queryCouponByCustomerId(Integer customerId);
+
+    void requireCoupon(String code, Customer customer);
 }

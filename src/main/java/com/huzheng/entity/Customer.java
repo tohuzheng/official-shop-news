@@ -25,6 +25,9 @@ public class Customer implements Serializable {
     private Integer age;
     private String tel;
     private String email;
+    @Column(name = "birthday")
+    @JsonFormat(pattern ="yyyy-MM-dd")
+    private Date birthday;
     @Column(name = "create_date")
     @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date createDate;
@@ -110,6 +113,14 @@ public class Customer implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     @Override
