@@ -3,6 +3,7 @@ package com.huzheng.filter;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.huzheng.commoms.utils.IpUtils;
+import com.huzheng.commoms.utils.LoginUtils;
 import com.huzheng.entity.Customer;
 import org.springframework.asm.Type;
 import org.springframework.cglib.transform.impl.InterceptFieldFilter;
@@ -30,9 +31,16 @@ public class LoginFilter implements HandlerInterceptor {
         Object username = session.getAttribute("userInfo");
 
         if (username != null){
-            String requestIP = IpUtils.getRequestIP(request);
-            System.out.println("请求IP："+requestIP);
-            return true;
+            if (username instanceof Customer) {
+                boolean checkToken = LoginUtils.checkToken(request);
+                if (checkToken) {
+                    return true;
+                }else {
+
+                }
+            }else {
+                return true;
+            }
         }
 
         // 清空返回流

@@ -5,10 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.nosql.redis.RedisDS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.huzheng.commoms.utils.EmailUtils;
-import com.huzheng.commoms.utils.Page;
-import com.huzheng.commoms.utils.ResultModel;
-import com.huzheng.commoms.utils.RsaUtils;
+import com.huzheng.commoms.utils.*;
 import com.huzheng.dto.*;
 import com.huzheng.entity.Customer;
 import com.huzheng.service.ICustomerService;
@@ -21,7 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Map;
@@ -46,7 +46,8 @@ public class CustomerController {
      */
     @RequestMapping(value = "/checkLogin")
     @ResponseBody
-    public ResultModel checkLogin(LoginDto loginDto, HttpServletRequest request){
+    public ResultModel checkLogin(LoginDto loginDto, HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
         ResultModel resultModel =new ResultModel();
         String ciphertext = loginDto.getPassword();
         // 从Redis中获取私钥
@@ -67,6 +68,11 @@ public class CustomerController {
             // 登录成功
             HttpSession session = request.getSession();
             session.setAttribute("userInfo",checkResult);
+            // 添加token，存入cookie
+            String token = LoginUtils.saveToken(request);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
             // 使用完毕，从redis中删除私钥
             jedis.del(loginDto.getKeyNo());
             jedis.close();
@@ -230,30 +236,6 @@ public class CustomerController {
     public void freezeCustomer(Integer id,Integer status){
 
         customerService.freezeCustomer(id, status);
-    }
-
-    /**
-     * @author zheng.hu
-     * @date 2020/3/29 20:42
-     * @description 测试分页
-     * @param
-     */
-    @RequestMapping(value = "/test")
-    @ResponseBody
-    public IPage testPage(){
-        QueryWrapper<Customer> queryWrapper=new QueryWrapper<>();
-        queryWrapper.le("create_date", new Date());
-        Customer customer =new Customer();
-        customer.setSex("男");
-        customer.setTel("");
-        Map<String, Object> map = BeanUtil.beanToMap(customer);
-        queryWrapper.allEq(map,false);
-        IPage<Customer> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
-        page.setSize(10);
-        page.setCurrent(1);
-        IPage<Customer> customerIPage = customerService._selectPage(page, queryWrapper);
-        IPage<Map<String, Object>> mapIPage = customerService._selectMapsPage(page, queryWrapper);
-        return mapIPage;
     }
 
     /**
