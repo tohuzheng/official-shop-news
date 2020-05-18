@@ -10,8 +10,8 @@
 
 # 使用框架
 ~~~
-1.Spring+SpringMVC+Mybatis
-2.Druid+MySQL
+1.Spring+SpringMVC+Mybatis+MybatisPlus
+2.Druid+MySQL+Redis
 3.Maven构架
 ~~~
 
