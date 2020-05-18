@@ -58,6 +58,9 @@ public class SinglePromotionController {
     @PostMapping("/addSinglePromotion")
     public void addSinglePromotion(SinglePromotion singlePromotion){
         singlePromotion.setCreateDate(new Date());
+        if (singlePromotion.getIsEffective() == null) {
+            singlePromotion.setIsEffective(0);
+        }
         this.singlePromotionService._insert(singlePromotion);
     }
 

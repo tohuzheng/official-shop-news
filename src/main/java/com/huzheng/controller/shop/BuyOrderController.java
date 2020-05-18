@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.commoms.enums.OrderStatus;
 import com.huzheng.dto.QueryBuyOrderDto;
 import com.huzheng.entity.BuyOrder;
+import com.huzheng.entity.Customer;
 import com.huzheng.service.IBuyOrderService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -41,11 +43,16 @@ public class BuyOrderController {
      * @description  分页查询带条件
      */
     @PostMapping("/queryPage")
-    public Page queryPage(QueryBuyOrderDto query, Date[] daterangeArr) {
+    public Page queryPage(QueryBuyOrderDto query, Date[] daterangeArr, HttpServletRequest request) {
 
         if (daterangeArr != null && daterangeArr.length == 2) {
             query.setStartTime(daterangeArr[0]);
             query.setOverTime(daterangeArr[1]);
+        }
+
+        Object userInfo = request.getSession().getAttribute("userInfo");
+        if (userInfo instanceof Customer) {
+            query.setCustomerId(((Customer) userInfo).getId());
         }
 
         return buyOrderService.queryPage(query);

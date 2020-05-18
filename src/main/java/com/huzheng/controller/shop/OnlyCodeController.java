@@ -90,7 +90,12 @@ public class OnlyCodeController {
 
     @PostMapping("/excelImport")
     public String excelImportCode(MultipartFile file) {
-        String excelPath = ExcelSaveUtils.saveExcel(file);
+        String excelPath = null;
+        try {
+            excelPath = ExcelSaveUtils.saveExcel(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.onlyCodeService.excelAddCode(excelPath);
         return "ok";
     }

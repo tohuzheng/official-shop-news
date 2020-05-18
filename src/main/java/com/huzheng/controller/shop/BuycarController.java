@@ -95,4 +95,18 @@ public class BuycarController {
         return dto;
     }
 
+    /**
+     * @author zheng.hu
+     * @date 2020/5/6 22:27
+     * @description 改变购物车数量
+     * @param
+     */
+    @PostMapping("/changeBuyCarNum")
+    public void changeBuyCarNum(Buycar buycar){
+        Buycar param = new Buycar();
+        param.setId(buycar.getId());
+        param.setProductNumber(buycar.getProductNumber());
+        buycarService._updateById(param);
+    }
+
 }

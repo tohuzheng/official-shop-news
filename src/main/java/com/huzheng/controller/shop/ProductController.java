@@ -1,6 +1,7 @@
 package com.huzheng.controller.shop;
 
 
+import cn.hutool.core.io.file.FileWriter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.dto.ProductDetailDto;
@@ -70,11 +71,11 @@ public class ProductController {
      */
     @PostMapping("/addProductImg")
     public String addProductImg(MultipartFile file){
-        String basePath = "E:/img/";
-        String fileName = UUID.randomUUID().toString()+".png";
-        String savePath = basePath+fileName;
+        String pathPrefix = "E:/img/";
+        String fileName = System.currentTimeMillis()+".png";
+        String savePath = pathPrefix+fileName;
         //文件上传
-        File saveFile = new File(basePath);
+        File saveFile = new File(pathPrefix);
         //判断路径是否存在，不存在则创建
         if(!saveFile.exists()){
             saveFile.mkdirs();
@@ -83,23 +84,12 @@ public class ProductController {
         if(!file.isEmpty()){
             try {
                 InputStream in = file.getInputStream();
-                OutputStream out = new FileOutputStream(savePath);
-                byte[] b = new byte[1024*3];
-                int count = -1;
-                while((count=in.read(b)) != -1) {
-                    out.write(b,0,count);
-                }
-                if(in!=null){
-                    in.close();
-                }
-                if(out != null) {
-                    out.close();
-                }
+                FileWriter writer = new FileWriter(savePath);
+                writer.writeFromStream(in);
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
-        System.out.println(savePath);
 
         return "/img/"+fileName;
     }

@@ -71,8 +71,9 @@ public class IDiscountServiceImpl extends IBaseServiceImpl<IDiscountDao, Discoun
         }else {
             queryWrapper.eq("is_push_category_banner",1);
         }
-        queryWrapper.eq("is_effective",1);
-        queryWrapper.ge("over_time", new Date());
+        //queryWrapper.eq("is_effective",1);
+        //queryWrapper.ge("over_time", new Date());
+        queryWrapper.orderByDesc("id");
         List<Discount> list = this._selectList(queryWrapper);
         return list;
     }

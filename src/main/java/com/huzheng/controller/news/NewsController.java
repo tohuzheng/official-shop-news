@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.huzheng.commoms.exceptions.CorrectException;
 import com.huzheng.entity.News;
 import com.huzheng.service.INewsService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
+
 import java.util.List;
 
 /**
@@ -34,6 +37,7 @@ public class NewsController {
      *
      * @param news
      */
+    @ApiOperation(value = "添加新闻资讯")
     @PostMapping("addNews")
     public void addNews(News news) {
         if (StrUtil.isEmpty(news.getTitle())) {
@@ -124,4 +128,5 @@ public class NewsController {
             jedis.close();
         }
     }
+
 }

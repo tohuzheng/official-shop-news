@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/login/loginCheck" method="post">
+<form action="/admin/loginCheck" method="post">
     <input name="username"/>
     <input name="password"/>
     <input type="submit" value="login"/>

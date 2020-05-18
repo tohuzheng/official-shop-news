@@ -40,7 +40,12 @@ public class CouponController {
     @PostMapping("/excelImport")
     @ResponseBody
     public List<Product> importProductByExcel(MultipartFile file){
-        String excelPath = ExcelSaveUtils.saveExcel(file);
+        String excelPath = null;
+        try {
+            excelPath = ExcelSaveUtils.saveExcel(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<Product> products = this.productService.queryProductByExcel(excelPath);
         return products;
     }
@@ -90,6 +95,7 @@ public class CouponController {
     @PostMapping("/queryDetail")
     @ResponseBody
     public CouponDto queryDetail (Integer id) {
+
         return couponService.queryDetail(id);
     }
 

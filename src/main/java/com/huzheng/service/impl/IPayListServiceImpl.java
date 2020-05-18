@@ -35,4 +35,5 @@ public class IPayListServiceImpl extends IBaseServiceImpl<IPayListDao, PayList> 
 
         return (Page<PayList>) this._selectPage(page, queryWrapper);
     }
+
 }

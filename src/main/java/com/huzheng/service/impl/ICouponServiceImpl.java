@@ -15,6 +15,7 @@ import com.huzheng.entity.Product;
 import com.huzheng.service.ICouponProductCategoryRelationService;
 import com.huzheng.service.ICouponProductRelationService;
 import com.huzheng.service.ICouponService;
+import com.huzheng.service.IProductService;
 import com.huzheng.service.base.IBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class ICouponServiceImpl extends IBaseServiceImpl<ICouponDao, Coupon> imp
 
     @Autowired
     private ICouponProductRelationService productRelationService;
+
+    @Autowired
+    private IProductService productService;
 
     /**
      * 通过主键删除数据
@@ -97,7 +101,8 @@ public class ICouponServiceImpl extends IBaseServiceImpl<ICouponDao, Coupon> imp
                 CouponProductRelation productRelation = new CouponProductRelation();
                 productRelation.setCouponId(coupon.getId());
                 productRelation.setProductId(product.getId());
-                productRelation.setProductName(product.getProductName());
+                Product p = productService._selectById(product.getId());
+                productRelation.setProductName(p.getName());
                 productRelationService._insert(productRelation);
             }
 

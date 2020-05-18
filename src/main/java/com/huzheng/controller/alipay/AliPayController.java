@@ -67,12 +67,13 @@ public class AliPayController {
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     private static final String NOTIFY_URL = "http://127.0.0.1/fuwuchuang_demo/return_url.jsp";
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    private static final String RETURN_URL = "http://40049459.ngrok.io/alipay/notify";
+    private static final String RETURN_URL = "http://8233bede.ngrok.io/alipay/notify";
 
     @RequestMapping("/createPay")
     public void createPayOrder(HttpServletResponse httpResponse,HttpServletRequest request,
                                @RequestBody SubmitOrderDto submitOrderDto) throws IOException {
-        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, SING_TYPE);
+        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY,
+                "json", CHARSET, ALIPAY_PUBLIC_KEY, SING_TYPE);
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();// 创建API对应的request
         alipayRequest.setReturnUrl(RETURN_URL);
         // 在公共参数中设置回跳和通知地址
